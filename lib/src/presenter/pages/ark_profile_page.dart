@@ -1,6 +1,5 @@
 import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_profile/utils/app_constanta.dart';
-import 'package:ark_module_profile/utils/app_dialog.dart';
 import 'package:ark_module_profile/utils/app_route_name.dart';
 import 'package:ark_module_profile/utils/app_style_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -402,6 +401,7 @@ class ArkProfilePage extends StatelessWidget {
                                             'Lengkapi',
                                             style: AppStyleText.styleMontserrat(
                                               fontSize: 10,
+                                              fontWeight: FontWeight.bold,
                                               color: Colors.white,
                                             ),
                                           ),
@@ -459,23 +459,27 @@ class ArkProfilePage extends StatelessWidget {
                       AppRouteName.certificate,
                       arguments: _pC.userId.value,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Sertifikat Saya',
-                          style: AppStyleText.styleMontserrat(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 11.5,
-                            color: Colors.black,
+                    child: SizedBox(
+                      height: 25,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Sertifikat Saya',
+                              style: AppStyleText.styleMontserrat(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 11.5,
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
-                        ),
-                        const Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 12,
-                          color: Color(0xFFC0C2C6),
-                        ),
-                      ],
+                          const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 12,
+                            color: Color(0xFFC0C2C6),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -503,26 +507,31 @@ class ArkProfilePage extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Ubah Data Face Recognition",
-                        style: AppStyleText.styleMontserrat(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11.5,
-                          color: Colors.black,
-                        ),
+                  InkWell(
+                    onTap: () => Get.toNamed(AppRouteName.changeFaceRecog),
+                    child: SizedBox(
+                      height: 25,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Ubah Data Face Recognition",
+                              style: AppStyleText.styleMontserrat(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 11.5,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 12,
+                            color: Color(0xFFC0C2C6),
+                          ),
+                        ],
                       ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 12,
-                          color: Color(0xFFC0C2C6),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                   const SizedBox(
                     height: 12,
@@ -534,26 +543,31 @@ class ArkProfilePage extends StatelessWidget {
                   const SizedBox(
                     height: 12,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Ubah Password",
-                        style: AppStyleText.styleMontserrat(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11.5,
-                          color: Colors.black,
-                        ),
+                  GestureDetector(
+                    onTap: () => _pC.fnResetPassword(),
+                    child: SizedBox(
+                      height: 25,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Ubah Password",
+                              style: AppStyleText.styleMontserrat(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 11.5,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 12,
+                            color: Color(0xFFC0C2C6),
+                          ),
+                        ],
                       ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 12,
-                          color: Color(0xFFC0C2C6),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
@@ -567,13 +581,7 @@ class ArkProfilePage extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 color: Colors.white,
                 child: GestureDetector(
-                  onTap: () => AppDialog.dialogWithQuestion(
-                    'Keluar',
-                    'Anda yakin ingin keluar?',
-                    'Batal',
-                    'Lanjut',
-                    () {},
-                  ),
+                  onTap: () => _pC.fnConfirmLogout(),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -585,14 +593,16 @@ class ArkProfilePage extends StatelessWidget {
                       const SizedBox(
                         width: 10,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          "Keluar",
-                          style: AppStyleText.styleMontserrat(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color: const Color(0xFFFB5C5C),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            "Keluar",
+                            style: AppStyleText.styleMontserrat(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              color: const Color(0xFFFB5C5C),
+                            ),
                           ),
                         ),
                       ),

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:ark_module_profile/ark_module_profile.dart';
+import 'package:ark_module_profile/src/data/dto/face_recog_dto.dart';
 import 'package:ark_module_profile/utils/app_url.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
@@ -41,7 +42,6 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
         },
       ),
     );
-    log("RESPONSE GET COURSE : ${response.data}");
     int code = response.statusCode ?? 500;
     if (code >= 500) {
       throw CustomException(code, 'Error... failed connect to server');
@@ -74,5 +74,64 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
         }
       },
     );
+  }
+
+  @override
+  Future<FaceRecogDTO> getFaceRecog(String token) async {
+    final response = await dio.get(
+      faceRecogUrl,
+      options: Options(
+        headers: {
+          "Authorization": token,
+        },
+      ),
+    );
+    int code = response.statusCode ?? 500;
+    if (code >= 500) {
+      throw CustomException(code, 'Error... failed connect to server');
+    } else if (code != 200) {
+      throw CustomException(
+          code, response.data['message'] ?? 'Failed... Please try again');
+    } else {
+      return FaceRecogDTO.fromJson(response.data);
+    }
+  }
+
+  @override
+  Future<SertifikatDTO> getAllCertificate(String userId) async {
+    final response = await dio.get("$sertifUrl/$userId");
+    log("RESPONSE GET ALL CERTIFICATE : ${response.data}");
+    int code = response.statusCode ?? 500;
+    if (code >= 500) {
+      throw CustomException(code, 'Error... failed connect to server');
+    } else if (code != 200) {
+      throw CustomException(
+          code, response.data['message'] ?? 'Failed... Please try again');
+    } else {
+      return SertifikatDTO.fromJson(response.data);
+    }
+  }
+
+  @override
+  Future<bool> resetPassword(String email, String token) async {
+    final response = await dio.post(
+      resetPasswordUrl,
+      data: {
+        "email": email,
+      },
+      options: Options(headers: {
+        'Authorization': token,
+      }),
+    );
+    log("RESPONSE RESET PASSWORD : ${response.data}");
+    int code = response.statusCode ?? 500;
+    if (code >= 500) {
+      throw CustomException(code, 'Error... failed connect to server');
+    } else if (code != 200) {
+      throw CustomException(
+          code, response.data['message'] ?? 'Failed... Please try again');
+    } else {
+      return response.data['success'];
+    }
   }
 }

@@ -7,21 +7,17 @@ export 'src/presenter/controllers/ark_sertifikat_controller.dart';
 ///DATASOURCES
 export 'src/data/datasources/remote/profile_remote_datasource_impl.dart';
 export 'src/data/datasources/remote/profile_remote_datasource.dart';
-export 'src/data/datasources/remote/sertifikat_remote_datasource.dart';
-export 'src/data/datasources/remote/sertifikat_remote_datasource_impl.dart';
 
 ///REPOSITORIES
 export 'src/data/repositories/profile_repository_impl.dart';
-export 'src/data/repositories/sertifikat_repository_impl.dart';
 export 'src/domain/repositories/profile_repository.dart';
-export 'src/domain/repositories/sertifikat_repository.dart';
 
 ///USECASE
 export 'src/domain/usecases/profile_usecase.dart';
-export 'src/domain/usecases/sertifikat_usecase.dart';
 
 ///PAGES
 export 'src/presenter/pages/ark_profile_page.dart';
+export 'src/presenter/pages/face_recog/change_face_recognition_page.dart';
 export 'src/presenter/pages/sertifikat/ark_sertifikat_page.dart';
 
 ///WIDGET

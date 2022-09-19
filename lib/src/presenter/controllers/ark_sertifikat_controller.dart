@@ -14,7 +14,7 @@ import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ArkSertifikatController extends GetxController {
-  final SertifikatUseCase _useCase;
+  final ProfileUseCase _useCase;
 
   ArkSertifikatController(this._useCase);
 

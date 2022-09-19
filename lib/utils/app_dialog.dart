@@ -1,6 +1,7 @@
 import 'package:ark_module_profile/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 import 'app_style_text.dart';
 
@@ -113,6 +114,34 @@ class AppDialog {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  static dialogSuccesState(String content) {
+    return Get.defaultDialog(
+      radius: 8,
+      middleText: '',
+      title: '',
+      barrierDismissible: false,
+      titleStyle: const TextStyle(fontSize: 0),
+      content: Column(
+        children: [
+          const SizedBox(height: 25),
+          Lottie.asset('assets/images/success-animation.json',
+              repeat: false, height: 100, width: 100),
+          const SizedBox(height: 35),
+          Text(
+            content,
+            style: const TextStyle(
+              height: 1.4,
+              fontSize: 16.5,
+              color: kNewBlack1,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          )
+        ],
       ),
     );
   }
