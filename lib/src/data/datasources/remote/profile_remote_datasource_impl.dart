@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:ark_module_profile/ark_module_profile.dart';
+import 'package:ark_module_profile/src/data/dto/city_dto.dart';
 import 'package:ark_module_profile/src/data/dto/face_recog_dto.dart';
+import 'package:ark_module_profile/src/data/dto/provinsi_dto.dart';
 import 'package:ark_module_profile/utils/app_url.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
@@ -132,6 +134,36 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
           code, response.data['message'] ?? 'Failed... Please try again');
     } else {
       return response.data['success'];
+    }
+  }
+
+  @override
+  Future<ProvinsiDTO> getProvinsi() async {
+    final response = await dio.get(provinsiUrl);
+    log("RESPONSE GET PROVINSI : ${response.data}");
+    int code = response.statusCode ?? 500;
+    if (code >= 500) {
+      throw CustomException(code, 'Error... failed connect to server');
+    } else if (code != 200) {
+      throw CustomException(
+          code, response.data['message'] ?? 'Failed... Please try again');
+    } else {
+      return ProvinsiDTO.fromJson(response.data);
+    }
+  }
+
+  @override
+  Future<CityDTO> getCity(int id) async {
+    final response = await dio.get("$cityUrl=$id");
+    log("RESPONSE GET CITY : ${response.data}");
+    int code = response.statusCode ?? 500;
+    if (code >= 500) {
+      throw CustomException(code, 'Error... failed connect to server');
+    } else if (code != 200) {
+      throw CustomException(
+          code, response.data['message'] ?? 'Failed... Please try again');
+    } else {
+      return CityDTO.fromJson(response.data);
     }
   }
 }

@@ -1,8 +1,10 @@
 import 'package:ark_module_profile/src/core/failures.dart';
+import 'package:ark_module_profile/src/domain/entities/city_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/coin_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/course_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/face_recog_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/profile_entity.dart';
+import 'package:ark_module_profile/src/domain/entities/provinsi_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/sertifikat_entitiy.dart';
 import 'package:ark_module_profile/src/domain/repositories/profile_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -30,4 +32,10 @@ class ProfileUseCase {
   Future<Either<Failure, bool>> resetPassword(
           String email, String token) async =>
       await repository.resetPassword(email, token);
+
+  Future<Either<Failure, ProvinsiEntity>> getProvinsi() async =>
+      await repository.getProvinsi();
+
+  Future<Either<Failure, CityEntity>> getCity(int id) async =>
+      await repository.getCity(id);
 }

@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_profile/src/domain/entities/face_recog_entity.dart';
 import 'package:ark_module_profile/utils/app_dialog.dart';
+import 'package:ark_module_profile/utils/app_route_name.dart';
 import 'package:ark_module_profile/utils/app_url.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,11 +17,20 @@ class ArkProfileController extends GetxController {
   ArkProfileController(this._useCase);
 
   @override
+  void onClose() {
+    log('ARK PROFILE CONTROLLER CLOSE');
+    super.onClose();
+  }
+
+  @override
   void onInit() async {
+    log('ARK PROFILE CONTROLLER INIT');
     await _fnSetup();
-    await fnGetProfile();
-    _fnGetFaceRecog();
-    await fnGetCourse();
+    if (_isLogin.value) {
+      await fnGetProfile();
+      _fnGetFaceRecog();
+      await fnGetCourse();
+    }
     await _fnChangeLoading(false);
     super.onInit();
   }
@@ -53,6 +64,27 @@ class ArkProfileController extends GetxController {
 
   final Rx<String> _email = ''.obs;
   Rx<String> get email => _email;
+
+  final Rx<String> _noHp = ''.obs;
+  Rx<String> get noHp => _noHp;
+
+  final Rx<String> _tanggalLahir = ''.obs;
+  Rx<String> get tanggalLahir => _tanggalLahir;
+
+  final Rx<String> _provinsiName = ''.obs;
+  Rx<String> get provinsiName => _provinsiName;
+
+  final Rx<String> _pendidikan = ''.obs;
+  Rx<String> get pendidikan => _pendidikan;
+
+  final Rx<String> _gender = ''.obs;
+  Rx<String> get gender => _gender;
+
+  final Rx<String> _profesi = ''.obs;
+  Rx<String> get profesi => _profesi;
+
+  final Rx<String> _city = ''.obs;
+  Rx<String> get city => _city;
 
   final Rx<bool> _isLoading = true.obs;
   Rx<bool> get isLoading => _isLoading;
@@ -90,6 +122,13 @@ class ArkProfileController extends GetxController {
     _name.value = prefs.getString('user_name') ?? '';
     _email.value = prefs.getString('user_email') ?? '';
     _userId.value = prefs.getString('user_id') ?? '';
+    _noHp.value = prefs.getString('user_hp') ?? '';
+    _gender.value = prefs.getString('user_gender') ?? '';
+    _provinsiName.value = prefs.getString('user_provincce_name') ?? '';
+    _tanggalLahir.value = prefs.getString('user_birth_date') ?? '';
+    _pendidikan.value = prefs.getString('user_degree') ?? '';
+    _profesi.value = prefs.getString('user_profesi') ?? '';
+    _city.value = prefs.getString('user_city') ?? '';
   }
 
   Future fnGetProfile() async {
@@ -169,13 +208,32 @@ class ArkProfileController extends GetxController {
   }
 
   void fnConfirmLogout() {
+    log("LOGOUT FROM ARK");
     AppDialog.dialogWithQuestion(
       'Keluar',
       'Anda yakin ingin keluar?',
       'Batal',
       'Lanjut',
-      () {},
+      () => logout(),
     );
+  }
+
+  Future<void> logout() async {
+    try {
+      GetPlatform.isAndroid
+          ? await _googleSignIn.signOut()
+          : await _googleSignInIos.signOut();
+      await FacebookAuth.instance.logOut();
+      // await deleteFCMToken();
+      await prefs.clear();
+      //close dialog
+      Get.back();
+      Get.offAllNamed(AppRouteName.main);
+    } catch (e) {
+      // errorAuthDialog(e.toString());
+      // Future.delayed(Duration(seconds: 3), () => Get.back());
+      log("ERROR LOGOUT : $e");
+    }
   }
 
   void fnResetPassword() async {

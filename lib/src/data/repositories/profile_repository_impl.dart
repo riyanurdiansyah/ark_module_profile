@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:ark_module_profile/src/core/exception.dart';
 import 'package:ark_module_profile/src/data/datasources/remote/profile_remote_datasource.dart';
+import 'package:ark_module_profile/src/domain/entities/city_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/coin_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/course_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/face_recog_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/profile_entity.dart';
 import 'package:ark_module_profile/src/core/failures.dart';
+import 'package:ark_module_profile/src/domain/entities/provinsi_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/sertifikat_entitiy.dart';
 import 'package:ark_module_profile/src/domain/repositories/profile_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -106,6 +108,44 @@ class ProfileRepositoryImpl implements ProfileRepository {
     try {
       final reset = await dataSource.resetPassword(email, token);
       return Right(reset);
+    } catch (e) {
+      if (e is CustomException) {
+        return Left(HttpFailure(e.code, e.message));
+      } else {
+        return const Left(
+          HttpFailure(
+            500,
+            'Error... failed connect to server \nPlease check your connection',
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProvinsiEntity>> getProvinsi() async {
+    try {
+      final provinsi = await dataSource.getProvinsi();
+      return Right(provinsi);
+    } catch (e) {
+      if (e is CustomException) {
+        return Left(HttpFailure(e.code, e.message));
+      } else {
+        return const Left(
+          HttpFailure(
+            500,
+            'Error... failed connect to server \nPlease check your connection',
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, CityEntity>> getCity(int id) async {
+    try {
+      final city = await dataSource.getCity(id);
+      return Right(city);
     } catch (e) {
       if (e is CustomException) {
         return Left(HttpFailure(e.code, e.message));

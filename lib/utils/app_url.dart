@@ -13,3 +13,9 @@ const String faceRecogUrl =
     "$baseUrl/wp-json/wplms/v1/user/profile?tab=profile";
 
 const String resetPasswordUrl = "$apiMemberUrl/api/v1/user/password/reset";
+
+const String provinsiUrl =
+    "https://dev.farizdotid.com/api/daerahindonesia/provinsi";
+
+const String cityUrl =
+    "https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi";

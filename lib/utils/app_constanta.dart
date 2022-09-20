@@ -8,3 +8,23 @@ String parseHtmlString(String htmlString) {
 
   return parsedString;
 }
+
+List<String> listProfesi = [
+  'Silahkan Pilih Profesi',
+  'Karyawan Swasta',
+  'PNS & BUMN',
+  'Profesional',
+  'Wiraswasta',
+  'Pelajar/Mahasiswa',
+  'Belum Bekerja',
+  'Lainnya',
+];
+
+List<String> listPendidikan = [
+  "Silahkan Pilih Pendidikan",
+  "SD",
+  "SMP",
+  "SMA",
+  "S1",
+  "S2",
+];
