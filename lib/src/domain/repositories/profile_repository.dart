@@ -24,4 +24,10 @@ abstract class ProfileRepository {
   Future<Either<Failure, ProvinsiEntity>> getProvinsi();
 
   Future<Either<Failure, CityEntity>> getCity(int id);
+
+  Future<Either<Failure, bool>> updateProfile(
+      ProfileDataEntity profile, String token);
+
+  Future<Either<Failure, bool>> updateCoin(
+      String id, Map<String, dynamic> data);
 }

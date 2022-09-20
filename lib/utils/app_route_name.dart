@@ -5,6 +5,8 @@ abstract class AppRouteName {
 
   static const signup = "/signup";
 
+  static const coin = "/coin";
+
   static const certificate = "/certificate";
 
   static const changeFaceRecog = "/change-face-recog";

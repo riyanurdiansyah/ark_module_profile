@@ -166,4 +166,36 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
       return CityDTO.fromJson(response.data);
     }
   }
+
+  @override
+  Future<bool> updateProfile(ProfileDataEntity profile, String token) async {
+    final response = await dio.put(
+      updateProfileUrl,
+      data: profile.toJson(),
+      options: Options(headers: {
+        'Authorization': token,
+      }),
+    );
+    log("RESPONSE UPDATE PROFILE : ${response.data}");
+    int code = response.statusCode ?? 500;
+    if (code >= 500) {
+      throw CustomException(code, 'Error... failed connect to server');
+    } else if (code != 200) {
+      throw CustomException(
+          code, response.data['message'] ?? 'Failed... Please try again');
+    } else {
+      return response.data['success'];
+    }
+  }
+
+  @override
+  Future<bool> updateCoin(String id, Map<String, dynamic> data) async {
+    return await FirebaseFirestore.instance
+        .collection("coins")
+        .doc(id)
+        .update(data)
+        .whenComplete(() => true)
+        .then((value) => true)
+        .catchError((error) => throw CustomException(500, error.toString()));
+  }
 }

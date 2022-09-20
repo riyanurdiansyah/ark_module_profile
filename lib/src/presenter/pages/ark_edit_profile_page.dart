@@ -36,7 +36,7 @@ class ArkEditProfilePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 20, right: 22),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () => _epC.fnCheckStateUpdateProfile(),
                   child: const Text(
                     "Simpan",
                     style: TextStyle(
@@ -229,39 +229,33 @@ class ArkEditProfilePage extends StatelessWidget {
                         minLines: 1,
                         maxLines: 4,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Nomor handphone tidak boleh kosong';
-                          } else if (!RegExp(
-                                  r'(^(?:[+]62)?([0-9]|[-]){10,16}$)')
-                              .hasMatch(value)) {
-                            return 'Masukkan format nomor HP yang valid';
-                          }
-                          return null;
-                        },
+                        validator: (value) =>
+                            AppValidator.checkNumberPhone(value!),
                         onSaved: (value) {
                           // _pC.handPhone.value = value!;
                         },
                       ),
                       const SizedBox(height: 20),
-                      //custom pendidikan terakhir
                       GestureDetector(
                         onTap: () {
-                          DatePicker.showDatePicker(context,
-                              theme: const DatePickerTheme(
-                                  backgroundColor: Colors.white),
-                              showTitleActions: true,
-                              minTime: DateTime(1930, 1, 1),
-                              maxTime: DateTime(2022, 12, 31),
-                              onConfirm: (date) {
-                            final DateFormat formatter =
-                                DateFormat('d MMMM yyyy', "id_ID");
-                            final String formatted = formatter.format(date);
-                            _pC.tanggalLahir.value = formatted;
-                            _epC.txtTanggalLahir.value = formatted;
-                          },
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.id);
+                          DatePicker.showDatePicker(
+                            context,
+                            theme: const DatePickerTheme(
+                                backgroundColor: Colors.white),
+                            showTitleActions: true,
+                            minTime: DateTime(DateTime.now().year - 80, 1, 1),
+                            maxTime: DateTime(DateTime.now().year - 15, 12, 31),
+                            onConfirm: (date) {
+                              final DateFormat formatter =
+                                  DateFormat('d MMMM yyyy', "id_ID");
+                              final String formatted = formatter.format(date);
+                              _pC.tanggalLahir.value = formatted;
+                              _epC.txtTanggalLahir.value = formatted;
+                            },
+                            currentTime:
+                                DateTime(DateTime.now().year - 15, 12, 31),
+                            locale: LocaleType.id,
+                          );
                         },
                         child: Stack(
                           clipBehavior: Clip.none,
@@ -490,7 +484,7 @@ class ArkEditProfilePage extends StatelessWidget {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 4),
                                             child: const Text(
-                                              'Provinsis',
+                                              'Provinsi',
                                               style: TextStyle(
                                                 fontSize: 9.5,
                                                 color: Color(0xFF838589),
@@ -660,14 +654,7 @@ class ArkEditProfilePage extends StatelessWidget {
                                     );
                                   }).toList(),
                                   onChanged: (value) {
-                                    _pC.pendidikan.value =
-                                        value == listPendidikan[0]
-                                            ? ''
-                                            : value!;
-                                    _epC.txtPendidikan.value =
-                                        value == listPendidikan[0]
-                                            ? ''
-                                            : value!;
+                                    _epC.txtPendidikan.value = value ?? '';
                                   },
                                 ),
                               ),
@@ -750,8 +737,8 @@ class ArkEditProfilePage extends StatelessWidget {
                                     );
                                   }).toList(),
                                   onChanged: (value) {
-                                    _pC.profesi.value = value!;
-                                    _epC.txtProfesi.value = value;
+                                    // _pC.profesi.value = value!;
+                                    _epC.txtProfesi.value = value!;
                                   },
                                 ),
                               ),
@@ -780,7 +767,6 @@ class ArkEditProfilePage extends StatelessWidget {
                           ],
                         ),
                       ),
-
                       const SizedBox(
                         height: 20,
                       ),
@@ -834,7 +820,7 @@ class ArkEditProfilePage extends StatelessWidget {
                               ),
                       ),
 
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 25),
                     ],
                   ),
                 ),

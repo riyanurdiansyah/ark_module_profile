@@ -14,6 +14,8 @@ const String faceRecogUrl =
 
 const String resetPasswordUrl = "$apiMemberUrl/api/v1/user/password/reset";
 
+const String updateProfileUrl = "$apiMemberUrl/api/v1/auth/update/profile";
+
 const String provinsiUrl =
     "https://dev.farizdotid.com/api/daerahindonesia/provinsi";
 

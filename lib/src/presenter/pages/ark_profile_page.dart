@@ -276,7 +276,8 @@ class ArkProfilePage extends StatelessWidget {
                                     Expanded(
                                       flex: 1,
                                       child: InkWell(
-                                        onTap: () => Get.toNamed('coin'),
+                                        onTap: () =>
+                                            Get.toNamed(AppRouteName.coin),
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 15, vertical: 16),
@@ -469,9 +470,8 @@ class ArkProfilePage extends StatelessWidget {
                                                 MaterialStateProperty.all(
                                                     const Color(0xFFFF8111)),
                                           ),
-                                          onPressed: () {
-                                            // Get.to(() => EditProfileScreen());
-                                          },
+                                          onPressed: () => Get.toNamed(
+                                              AppRouteName.editProfile),
                                           child: Text(
                                             'Lengkapi',
                                             style: AppStyleText.styleMontserrat(

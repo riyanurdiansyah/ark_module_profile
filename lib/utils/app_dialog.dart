@@ -118,24 +118,52 @@ class AppDialog {
     );
   }
 
-  static dialogSuccesState(String content) {
+  static dialogLoading() {
     return Get.defaultDialog(
+      barrierDismissible: false,
+      onWillPop: () async => false,
       radius: 8,
       middleText: '',
       title: '',
-      barrierDismissible: false,
       titleStyle: const TextStyle(fontSize: 0),
       content: Column(
         children: [
           const SizedBox(height: 25),
-          Lottie.asset('assets/images/success-animation.json',
-              repeat: false, height: 100, width: 100),
+          Lottie.asset('assets/images/loading-animation.json',
+              height: 100, width: 100),
+          const SizedBox(height: 35),
+          const Text(
+            'Harap Tunggu',
+            style: TextStyle(
+              fontSize: 16.5,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  static dialogStateWithLottie(
+    String lottiFile,
+    String txt,
+  ) {
+    return Get.defaultDialog(
+      radius: 8,
+      middleText: '',
+      title: '',
+      titleStyle: const TextStyle(fontSize: 0),
+      content: Column(
+        children: [
+          const SizedBox(height: 25),
+          Lottie.asset('assets/images/$lottiFile',
+              height: 100, width: 100, repeat: false),
           const SizedBox(height: 35),
           Text(
-            content,
-            style: const TextStyle(
+            txt,
+            style: AppStyleText.styleMontserrat(
+              fontSize: 16,
               height: 1.4,
-              fontSize: 16.5,
               color: kNewBlack1,
               fontWeight: FontWeight.bold,
             ),

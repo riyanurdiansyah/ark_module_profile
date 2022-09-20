@@ -159,4 +159,44 @@ class ProfileRepositoryImpl implements ProfileRepository {
       }
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> updateProfile(
+      ProfileDataEntity profile, String token) async {
+    try {
+      final update = await dataSource.updateProfile(profile, token);
+      return Right(update);
+    } catch (e) {
+      if (e is CustomException) {
+        return Left(HttpFailure(e.code, e.message));
+      } else {
+        return const Left(
+          HttpFailure(
+            500,
+            'Error... failed connect to server \nPlease check your connection',
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateCoin(
+      String id, Map<String, dynamic> data) async {
+    try {
+      final update = await dataSource.updateCoin(id, data);
+      return Right(update);
+    } catch (e) {
+      if (e is CustomException) {
+        return Left(HttpFailure(e.code, e.message));
+      } else {
+        return const Left(
+          HttpFailure(
+            500,
+            'Error... failed connect to server \nPlease check your connection',
+          ),
+        );
+      }
+    }
+  }
 }

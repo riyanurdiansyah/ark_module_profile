@@ -104,6 +104,9 @@ class ArkProfileController extends GetxController {
   final Rx<ProfileEntity> _profile = ProfileEntity().obs;
   Rx<ProfileEntity> get profile => _profile;
 
+  final Rx<CoinEntity> _coin = CoinEntity().obs;
+  Rx<CoinEntity> get coin => _coin;
+
   final Rx<FaceRecogEntity> _faceRecog =
       const FaceRecogEntity(base64image: '', subjectId: '').obs;
 
@@ -148,11 +151,31 @@ class ArkProfileController extends GetxController {
       },
 
       ///IF RESPONSE SUCCESS
-      (data) {
+      (data) async {
         _profile.value = data;
+        await fnSetValueToSpf();
       },
     );
     await _fnChangeLoading(false);
+  }
+
+  Future fnSetValueToSpf() async {
+    _name.value = _profile.value.data!.fullname;
+    _noHp.value = _profile.value.data!.noHp;
+    _tanggalLahir.value = _profile.value.data!.tglLahir;
+    _gender.value = _profile.value.data!.jenisKelamin;
+    _provinsiName.value = _profile.value.data!.provinsi;
+    _city.value = _profile.value.data!.kota;
+    _pendidikan.value = _profile.value.data!.pendidikanTerakhir;
+    _profesi.value = _profile.value.data!.profession;
+    await prefs.setString('user_name', _name.value);
+    await prefs.setString('user_hp', _noHp.value);
+    await prefs.setString('user_birth_date', _tanggalLahir.value);
+    await prefs.setString('user_gender', _gender.value);
+    await prefs.setString('user_province_name', _provinsiName.value);
+    await prefs.setString('user_city', _city.value);
+    await prefs.setString('user_degree', _pendidikan.value);
+    await prefs.setString('user_profesi', _profesi.value);
   }
 
   Future fnGetCourse() async {
@@ -181,7 +204,10 @@ class ArkProfileController extends GetxController {
   }
 
   Stream<CoinEntity> fnGetCoin() {
-    return _useCase.getCoin(userId.value).map((event) => event);
+    return _useCase.getCoin(userId.value).map((event) {
+      _coin.value = event;
+      return _coin.value;
+    });
   }
 
   void _fnGetFaceRecog() async {
@@ -254,7 +280,7 @@ class ArkProfileController extends GetxController {
 
       ///IF RESPONSE SUCCESS
       (data) {
-        AppDialog.dialogSuccesState(
+        AppDialog.dialogStateWithLottie('success-animation.json',
             'Tautan ubah password terkirim ke email anda!');
         Future.delayed(const Duration(seconds: 2), () {
           Get.back();

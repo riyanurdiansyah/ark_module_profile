@@ -14,13 +14,13 @@ class ProfileUseCase {
 
   ProfileUseCase(this.repository);
 
+  Stream<CoinEntity> getCoin(String userId) => repository.getCoin(userId);
+
   Future<Either<Failure, ProfileEntity>> getProfile(String token) async =>
       await repository.getProfile(token);
 
   Future<Either<Failure, List<CourseEntity>>> getCourse(String token) async =>
       await repository.getCourse(token);
-
-  Stream<CoinEntity> getCoin(String userId) => repository.getCoin(userId);
 
   Future<Either<Failure, FaceRecogEntity>> getFaceRecog(String token) async =>
       await repository.getFaceRecog(token);
@@ -38,4 +38,12 @@ class ProfileUseCase {
 
   Future<Either<Failure, CityEntity>> getCity(int id) async =>
       await repository.getCity(id);
+
+  Future<Either<Failure, bool>> updateProfile(
+          ProfileDataEntity profile, String token) async =>
+      await repository.updateProfile(profile, token);
+
+  Future<Either<Failure, bool>> updateCoin(
+          String id, Map<String, dynamic> data) async =>
+      await repository.updateCoin(id, data);
 }

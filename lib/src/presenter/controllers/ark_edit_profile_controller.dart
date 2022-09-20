@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_profile/src/data/dto/provinsi_dto.dart';
 import 'package:ark_module_profile/src/domain/entities/city_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/provinsi_entity.dart';
+import 'package:ark_module_profile/utils/app_constanta.dart';
+import 'package:ark_module_profile/utils/app_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -14,7 +19,8 @@ class ArkEditProfileController extends GetxController {
   @override
   void onInit() async {
     await _fnSetup();
-    // await fnGetProfile();
+    await fnGetProfile();
+    await _fnStoreDataToVar();
     await fnGetProvinsi();
     if (_userProvinsi.value.isNotEmpty) {
       await fnGetCity();
@@ -83,20 +89,29 @@ class ArkEditProfileController extends GetxController {
 
   Future _fnSetup() async {
     _token.value = _pC.token.value;
-    _userProvinsi.value = _pC.provinsiName.value;
-    _tcHp.text = _pC.noHp.value;
-    _tcName.text = _pC.name.value;
-    _txtProfesi.value = _pC.profesi.value;
-    _txtCity.value = _pC.city.value;
-    _txtTanggalLahir.value = _pC.tanggalLahir.value;
-    _txtProfesi.value = _pC.profesi.value;
-    _txtPendidikan.value = _pC.pendidikan.value;
-    if (_pC.gender.value == 'L') {
-      selectedGender.value = JenisKelamin.pria;
-    } else if (_pC.gender.value == 'P') {
-      selectedGender.value = JenisKelamin.wanita;
+  }
+
+  Future _fnStoreDataToVar() async {
+    _userProvinsi.value = _profile.value.data!.provinsi;
+    _tcHp.text = _profile.value.data!.noHp;
+    _tcName.text = _profile.value.data!.fullname;
+    _txtProfesi.value = listProfesi.contains(_profile.value.data!.profession)
+        ? _profile.value.data!.profession
+        : listProfesi.last;
+
+    _tcProfesiLainnya.text =
+        listProfesi.contains(_profile.value.data!.profession)
+            ? ''
+            : _profile.value.data!.profession;
+    _txtCity.value = _profile.value.data!.kota;
+    _txtTanggalLahir.value = _profile.value.data!.tglLahir;
+    _txtPendidikan.value = _profile.value.data!.pendidikanTerakhir;
+    if (_profile.value.data!.jenisKelamin == 'L') {
+      _selectedGender.value = JenisKelamin.pria;
+    } else if (_profile.value.data!.jenisKelamin == 'P') {
+      _selectedGender.value = JenisKelamin.wanita;
     } else {
-      selectedGender.value = JenisKelamin.defaultGender;
+      _selectedGender.value = JenisKelamin.defaultGender;
     }
   }
 
@@ -105,7 +120,6 @@ class ArkEditProfileController extends GetxController {
   }
 
   Future fnGetProfile() async {
-    _fnChangeLoading(true);
     final response = await _useCase.getProfile(_token.value);
     response.fold(
       ///IF RESPONSE IS ERROR
@@ -116,8 +130,9 @@ class ArkEditProfileController extends GetxController {
         } else {
           _errorMessage =
               'Failed connect to server \n Please check your connection';
+          Fluttertoast.showToast(msg: "Error 500x : $_errorMessage");
         }
-        _profile.value = ProfileEntity.withError(errorMessage);
+        _profile.value = ProfileEntity.withError(_errorMessage);
       },
 
       ///IF RESPONSE SUCCESS
@@ -125,7 +140,6 @@ class ArkEditProfileController extends GetxController {
         _profile.value = data;
       },
     );
-    await _fnChangeLoading(false);
   }
 
   Future fnGetProvinsi() async {
@@ -139,6 +153,7 @@ class ArkEditProfileController extends GetxController {
         } else {
           _errorMessage =
               'Failed connect to server \n Please check your connection';
+          Fluttertoast.showToast(msg: "Error 500x : $_errorMessage");
         }
       },
 
@@ -147,7 +162,6 @@ class ArkEditProfileController extends GetxController {
         _provinsi.value = data.provinsi;
         _provinsi.insert(
             0, ProvinsiDataDTO(id: -1, nama: 'Silahkan Pilih Provinsi'));
-        _txtCity.value = '';
       },
     );
   }
@@ -166,6 +180,7 @@ class ArkEditProfileController extends GetxController {
         } else {
           _errorMessage =
               'Failed connect to server \n Please check your connection';
+          Fluttertoast.showToast(msg: "Error 500x : $_errorMessage");
         }
       },
 
@@ -187,6 +202,7 @@ class ArkEditProfileController extends GetxController {
         } else {
           _errorMessage =
               'Failed connect to server \n Please check your connection';
+          Fluttertoast.showToast(msg: "Error 500x : $_errorMessage");
         }
       },
 
@@ -201,17 +217,142 @@ class ArkEditProfileController extends GetxController {
   void fnOnChangedProvinsi(ProvinsiDataEntity? value) {
     _newProvinsi.value = value!;
     _txtCity.value = '';
-    fnGetNewCity();
+    if (value.nama != 'Silahkan Pilih Provinsi') {
+      fnGetNewCity();
+    }
   }
 
   void fnOnChangedGender(JenisKelamin? val) {
     _selectedGender.value = val!;
-    if (_selectedGender.value == JenisKelamin.pria) {
-      _pC.gender.value = 'Laki-laki';
-    } else if (_selectedGender.value == JenisKelamin.wanita) {
-      _pC.gender.value = 'Perempuan';
+  }
+
+  void fnCheckStateUpdateProfile() async {
+    if (_formKey.currentState!.validate()) {
+      if (_txtProfesi.value == 'Lainnya' &&
+          _tcProfesiLainnya.value.text.isEmpty) {
+        AppDialog.dialogStateWithLottie(
+          'fail-animation.json',
+          'Profesi lainnya tidak boleh kosong',
+        );
+      } else {
+        AppDialog.dialogLoading();
+        final data = ProfileDataEntity(
+          fullname: tcName.text,
+          location: '',
+          bio: '',
+          facebook: '',
+          twitter: '',
+          profession: _txtProfesi.value == 'Lainnya'
+              ? _tcProfesiLainnya.text
+              : _txtProfesi.value,
+          tglLahir: _txtTanggalLahir.value,
+          provinsi: _newProvinsi.value.nama == 'Silahkan Pilih Provinsi'
+              ? ''
+              : _newProvinsi.value.nama,
+          kota: _txtCity.value,
+          jenisKelamin: _selectedGender.value == JenisKelamin.pria
+              ? 'L'
+              : _selectedGender.value == JenisKelamin.wanita
+                  ? 'P'
+                  : '',
+          noHp: _tcHp.text,
+          pendidikanTerakhir: _txtPendidikan.value,
+        );
+        await fnUpdateProfile(data);
+      }
+    }
+  }
+
+  Future fnUpdateProfile(ProfileDataEntity data) async {
+    final response = await _useCase.updateProfile(data, _token.value);
+    response.fold(
+      ///IF RESPONSE IS ERROR
+      (fail) {
+        if (fail is HttpFailure) {
+          Fluttertoast.showToast(msg: "Error ${fail.code}x : ${fail.message}");
+          _errorMessage = fail.message;
+        } else {
+          _errorMessage =
+              'Failed connect to server \n Please check your connection';
+          Fluttertoast.showToast(msg: "Error 500x : $_errorMessage");
+        }
+
+        Get.back();
+      },
+
+      ///IF RESPONSE SUCCESS
+      (data) async {
+        await _pC.fnGetProfile();
+        if (isCompletedForm) {
+          log('FORM UPDATE PROFILE LENGKAP');
+          await fnUpdateCoin();
+        } else {
+          Get.back();
+          Get.back();
+          AppDialog.dialogStateWithLottie(
+              'success-animation.json', 'Profile berhasil diperbarui');
+          Future.delayed(
+            const Duration(seconds: 3),
+            () {
+              Get.back();
+            },
+          );
+        }
+      },
+    );
+  }
+
+  bool get isCompletedForm =>
+      _tcName.text.isNotEmpty &&
+      _tcHp.text.isNotEmpty &&
+      _txtTanggalLahir.value.isNotEmpty &&
+      _selectedGender.value != JenisKelamin.defaultGender &&
+      _txtPendidikan.value.isNotEmpty &&
+      _txtProfesi.value.isNotEmpty;
+
+  Future fnUpdateCoin() async {
+    if (_pC.coin.value.isCompleted == false) {
+      int coinNow = _pC.coin.value.coins ?? 0;
+      int coinUpdate = 0;
+      if (_pC.coin.value.isOldUser == null ||
+          _pC.coin.value.isOldUser == true) {
+        coinUpdate = coinNow + 10000;
+      } else {
+        coinUpdate = coinNow + 5000;
+      }
+      final data = {
+        "coins": coinUpdate,
+        "isCompleted": true,
+        "updatedAt": Timestamp.fromDate(DateTime.now()),
+      };
+
+      final response = await _useCase.updateCoin(_pC.userId.value, data);
+      response.fold((fail) {
+        Fluttertoast.showToast(
+            msg: "Error 500x : Failed update coin.. try again");
+      }, (r) {
+        Get.back();
+        Get.back();
+        AppDialog.dialogStateWithLottie(
+            'success-animation.json', 'Profile berhasil diperbarui');
+        Future.delayed(
+          const Duration(seconds: 3),
+          () {
+            Get.back();
+          },
+        );
+      });
     } else {
-      _pC.gender.value = '';
+      Get.back();
+      Get.back();
+      AppDialog.dialogStateWithLottie(
+          'success-animation.json', 'Profile berhasil diperbarui');
+      Future.delayed(
+        const Duration(seconds: 3),
+        () {
+          Get.back();
+        },
+      );
     }
   }
 }

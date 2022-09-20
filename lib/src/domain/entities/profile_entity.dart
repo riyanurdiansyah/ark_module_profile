@@ -48,4 +48,16 @@ class ProfileDataEntity {
   String jenisKelamin;
   String noHp;
   String pendidikanTerakhir;
+
+  Map<String, dynamic> toJson() => {
+        "nama_lengkap": fullname,
+        "biodata": bio,
+        "profesi": profession,
+        "no_hp": noHp,
+        "jenis_kelamin": jenisKelamin,
+        "tgl_lahir": tglLahir,
+        "kota": kota,
+        "provinsi": provinsi,
+        "pendidikan_terakhir": pendidikanTerakhir,
+      };
 }
