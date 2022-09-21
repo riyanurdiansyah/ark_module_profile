@@ -3,10 +3,10 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 import 'package:ark_module_profile/ark_module_profile.dart';
+import 'package:ark_module_profile/src/core/exception_handling.dart';
 import 'package:ark_module_profile/utils/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -77,7 +77,7 @@ class ArkSertifikatController extends GetxController {
   // RxList<SertifikatDataEntity> get listSertifikatResult =>
   //     _listSertifikatResult;
 
-  String _errorMessage = '';
+  final String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
   Future _fnSetup() async {
@@ -130,13 +130,7 @@ class ArkSertifikatController extends GetxController {
     response.fold(
       ///IF RESPONSE IS ERROR
       (fail) {
-        if (fail is HttpFailure) {
-          Fluttertoast.showToast(msg: "Error ${fail.code}x : ${fail.message}");
-          _errorMessage = fail.message;
-        } else {
-          _errorMessage =
-              'Failed connect to server \n Please check your connection';
-        }
+        ExceptionHandle.execute(fail);
         _sertifikat.value = SertifikatEntity.withError(errorMessage);
       },
 

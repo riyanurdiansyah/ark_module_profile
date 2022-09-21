@@ -1,4 +1,4 @@
-import 'package:ark_module_profile/src/presenter/controllers/ark_sertifikat_controller.dart';
+import 'package:ark_module_profile/src/presentation/controllers/ark_sertifikat_controller.dart';
 import 'package:ark_module_profile/utils/app_style_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

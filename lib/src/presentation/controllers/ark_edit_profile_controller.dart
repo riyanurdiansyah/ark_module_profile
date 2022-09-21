@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:ark_module_profile/ark_module_profile.dart';
+import 'package:ark_module_profile/src/core/exception_handling.dart';
 import 'package:ark_module_profile/src/data/dto/provinsi_dto.dart';
 import 'package:ark_module_profile/src/domain/entities/city_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/provinsi_entity.dart';
@@ -38,7 +39,7 @@ class ArkEditProfileController extends GetxController {
   final Rx<bool> _isLoading = true.obs;
   Rx<bool> get isLoading => _isLoading;
 
-  String _errorMessage = '';
+  final String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
   final Rx<ProfileEntity> _profile = ProfileEntity().obs;
@@ -124,14 +125,7 @@ class ArkEditProfileController extends GetxController {
     response.fold(
       ///IF RESPONSE IS ERROR
       (fail) {
-        if (fail is HttpFailure) {
-          Fluttertoast.showToast(msg: "Error ${fail.code}x : ${fail.message}");
-          _errorMessage = fail.message;
-        } else {
-          _errorMessage =
-              'Failed connect to server \n Please check your connection';
-          Fluttertoast.showToast(msg: "Error 500x : $_errorMessage");
-        }
+        ExceptionHandle.execute(fail);
         _profile.value = ProfileEntity.withError(_errorMessage);
       },
 
@@ -146,16 +140,7 @@ class ArkEditProfileController extends GetxController {
     final response = await _useCase.getProvinsi();
     response.fold(
       ///IF RESPONSE IS ERROR
-      (fail) {
-        if (fail is HttpFailure) {
-          Fluttertoast.showToast(msg: "Error ${fail.code}x : ${fail.message}");
-          _errorMessage = fail.message;
-        } else {
-          _errorMessage =
-              'Failed connect to server \n Please check your connection';
-          Fluttertoast.showToast(msg: "Error 500x : $_errorMessage");
-        }
-      },
+      (fail) => ExceptionHandle.execute(fail),
 
       ///IF RESPONSE SUCCESS
       (data) {
@@ -173,16 +158,7 @@ class ArkEditProfileController extends GetxController {
     final response = await _useCase.getCity(id);
     response.fold(
       ///IF RESPONSE IS ERROR
-      (fail) {
-        if (fail is HttpFailure) {
-          Fluttertoast.showToast(msg: "Error ${fail.code}x : ${fail.message}");
-          _errorMessage = fail.message;
-        } else {
-          _errorMessage =
-              'Failed connect to server \n Please check your connection';
-          Fluttertoast.showToast(msg: "Error 500x : $_errorMessage");
-        }
-      },
+      (fail) => ExceptionHandle.execute(fail),
 
       ///IF RESPONSE SUCCESS
       (data) {
@@ -195,16 +171,7 @@ class ArkEditProfileController extends GetxController {
     final response = await _useCase.getCity(_newProvinsi.value.id);
     response.fold(
       ///IF RESPONSE IS ERROR
-      (fail) {
-        if (fail is HttpFailure) {
-          Fluttertoast.showToast(msg: "Error ${fail.code}x : ${fail.message}");
-          _errorMessage = fail.message;
-        } else {
-          _errorMessage =
-              'Failed connect to server \n Please check your connection';
-          Fluttertoast.showToast(msg: "Error 500x : $_errorMessage");
-        }
-      },
+      (fail) => ExceptionHandle.execute(fail),
 
       ///IF RESPONSE SUCCESS
       (data) {
@@ -268,15 +235,7 @@ class ArkEditProfileController extends GetxController {
     response.fold(
       ///IF RESPONSE IS ERROR
       (fail) {
-        if (fail is HttpFailure) {
-          Fluttertoast.showToast(msg: "Error ${fail.code}x : ${fail.message}");
-          _errorMessage = fail.message;
-        } else {
-          _errorMessage =
-              'Failed connect to server \n Please check your connection';
-          Fluttertoast.showToast(msg: "Error 500x : $_errorMessage");
-        }
-
+        ExceptionHandle.execute(fail);
         Get.back();
       },
 
@@ -327,10 +286,9 @@ class ArkEditProfileController extends GetxController {
       };
 
       final response = await _useCase.updateCoin(_pC.userId.value, data);
-      response.fold((fail) {
-        Fluttertoast.showToast(
-            msg: "Error 500x : Failed update coin.. try again");
-      }, (r) {
+      response.fold(
+          (fail) => Fluttertoast.showToast(
+              msg: "Error 500x : Failed update coin.. try again"), (r) {
         Get.back();
         Get.back();
         AppDialog.dialogStateWithLottie(
