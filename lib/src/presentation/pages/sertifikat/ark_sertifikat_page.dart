@@ -1,4 +1,5 @@
 import 'package:ark_module_profile/ark_module_profile.dart';
+import 'package:ark_module_profile/src/presentation/pages/sertifikat/widget/sertifikat_kelulusan_tab.dart';
 import 'package:ark_module_profile/utils/app_style_text.dart';
 import 'package:ark_module_profile/utils/app_style_text_field.dart';
 import 'package:flutter/material.dart';
@@ -96,12 +97,14 @@ class ArkSertifikatPage extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Urutkan',
-                            style: AppStyleText.styleMontserrat(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 11,
-                              color: const Color(0xFFACAEB2),
+                          Obx(
+                            () => Text(
+                              _sC.txtUrutkan.value,
+                              style: AppStyleText.styleMontserrat(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 11,
+                                color: const Color(0xFF333539),
+                              ),
                             ),
                           ),
                           const Icon(
@@ -113,7 +116,7 @@ class ArkSertifikatPage extends StatelessWidget {
                     ),
                     listMenu: <PopupMenuItem>[
                       PopupMenuItem(
-                        onTap: () => _sC.fnSortCertificate(),
+                        onTap: () => _sC.fnSortCertificate('Abjad'),
                         child: Text(
                           'Abjad',
                           style: AppStyleText.styleMontserrat(
@@ -124,7 +127,7 @@ class ArkSertifikatPage extends StatelessWidget {
                         ),
                       ),
                       PopupMenuItem(
-                        onTap: () => _sC.fnSortCertificate(),
+                        onTap: () => _sC.fnSortCertificate('Terbaru'),
                         child: Text(
                           'Terbaru',
                           style: AppStyleText.styleMontserrat(
@@ -232,7 +235,7 @@ class ArkSertifikatPage extends StatelessWidget {
                 index: _sC.indexTabSertif.value,
                 children: [
                   SertifikatPenyelesaianTab(),
-                  SertifikatPenyelesaianTab(),
+                  SertifikatKelulusanTab(),
                 ],
               ),
             ),

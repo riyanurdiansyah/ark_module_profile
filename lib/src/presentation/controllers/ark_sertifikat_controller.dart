@@ -5,13 +5,16 @@ import 'dart:ui';
 import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_profile/src/core/exception_handling.dart';
 import 'package:ark_module_profile/utils/app_snackbar.dart';
+import 'package:ark_module_profile/utils/app_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ArkSertifikatController extends GetxController {
   final ProfileUseCase _useCase;
@@ -36,16 +39,25 @@ class ArkSertifikatController extends GetxController {
     super.onClose();
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> get scaffoldkey => _scaffoldkey;
+
   final Rx<SertifikatEntity> _sertifikat = SertifikatEntity().obs;
   Rx<SertifikatEntity> get sertifikat => _sertifikat;
+
+  final RxList<SertifikatDataEntity> _sertifikatKelulusan =
+      <SertifikatDataEntity>[].obs;
+  RxList<SertifikatDataEntity> get sertifikatKelulusan => _sertifikatKelulusan;
+
+  final RxList<SertifikatDataEntity> _sertifikatPenyelesaian =
+      <SertifikatDataEntity>[].obs;
+  RxList<SertifikatDataEntity> get sertifikatPenyelesaian =>
+      _sertifikatPenyelesaian;
 
   final RxList<SertifikatDataEntity> _listSertifikatResult =
       <SertifikatDataEntity>[].obs;
   RxList<SertifikatDataEntity> get listSertifikatResult =>
       _listSertifikatResult;
-
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
-  GlobalKey<ScaffoldState> get scaffoldkey => _scaffoldkey;
 
   final ReceivePort _port = ReceivePort();
 
@@ -58,27 +70,23 @@ class ArkSertifikatController extends GetxController {
   final Rx<int> _indexTabSertif = 0.obs;
   Rx<int> get indexTabSertif => _indexTabSertif;
 
-  String _userId = '';
-  String get userId => _userId;
-
   final Rx<bool> _isLoading = true.obs;
   Rx<bool> get isLoading => _isLoading;
 
   final Rx<bool> _isHaveQuerySearch = false.obs;
   Rx<bool> get isHaveQuerySearch => _isHaveQuerySearch;
 
-  TextEditingController txSearch = TextEditingController();
+  final Rx<String> _txtUrutkan = 'Urutkan'.obs;
+  Rx<String> get txtUrutkan => _txtUrutkan;
 
-  // final RxList<SertifikatEntity> _sertifikat = <SertifikatEntity>[].obs;
-  // RxList<SertifikatEntity> get sertifikat => _sertifikat;
-
-  // final RxList<SertifikatDataEntity> _listSertifikatResult =
-  //     <SertifikatDataEntity>[].obs;
-  // RxList<SertifikatDataEntity> get listSertifikatResult =>
-  //     _listSertifikatResult;
+  final TextEditingController _txSearch = TextEditingController();
+  TextEditingController get txSearch => _txSearch;
 
   final String _errorMessage = '';
   String get errorMessage => _errorMessage;
+
+  String _userId = '';
+  String get userId => _userId;
 
   Future _fnSetup() async {
     prefs = await SharedPreferences.getInstance();
@@ -115,6 +123,8 @@ class ArkSertifikatController extends GetxController {
   void fnOnChangeSertif(int val) {
     ///RESET SEARCH WITH EMPTY STRING
     fnOnSearchCertificate('');
+    _listSertifikatResult.clear();
+    _txtUrutkan.value = 'Urutkan';
     _indexTabSertif.value = val;
   }
 
@@ -139,8 +149,15 @@ class ArkSertifikatController extends GetxController {
         for (int i = 0; i < data.certificates!.length; i++) {
           _progresDownload.add(0);
         }
-        log("LIST PROGRESS : $_progresDownload");
+        log("DOWNLOAD PROGRESS : $_progresDownload");
         _sertifikat.value = data;
+        _sertifikatKelulusan.value =
+            data.certificates?.where((e) => e.tipe == 'kelulusan').toList() ??
+                [];
+        _sertifikatPenyelesaian.value = data.certificates
+                ?.where((e) => e.tipe == 'penyelesaian')
+                .toList() ??
+            [];
       },
     );
     await _fnChangeLoading(false);
@@ -195,35 +212,84 @@ class ArkSertifikatController extends GetxController {
   }
 
   void fnOnSearchCertificate(String query) async {
-    _fnChangeLoading(true);
     if (query.isNotEmpty) {
       _isHaveQuerySearch.value = true;
     } else {
-      txSearch.clear();
+      log('KOSONG QUERY');
+      _txSearch.clear();
+      _listSertifikatResult.clear();
       _isHaveQuerySearch.value = false;
     }
-    for (var e in _sertifikat.value.certificates!) {
-      if (e.courseName.contains(query)) {
-        _listSertifikatResult.add(e);
+    if (_indexTabSertif.value == 0) {
+      if (_sertifikatPenyelesaian.isNotEmpty) {
+        _fnChangeLoading(true);
       }
+      for (var e in _sertifikat.value.certificates!
+          .where((e) => e.tipe == 'penyelesaian')
+          .toList()) {
+        log("SEARCH SERTIF PENYELESAIAN");
+        if (e.courseName.contains(query)) {
+          _listSertifikatResult.add(e);
+        }
+      }
+      _sertifikatPenyelesaian.value = _listSertifikatResult
+          .where(
+            (e) => e.courseName.toLowerCase().contains(
+                  txSearch.text,
+                ),
+          )
+          .toSet()
+          .toList();
+    } else {
+      _fnChangeLoading(true);
+      log("SEARCH SERTIF KELULUSAN");
+      for (var e in _sertifikat.value.certificates!
+          .where((e) => e.tipe == 'kelulusan')
+          .toList()) {
+        if (e.courseName.contains(query)) {
+          _listSertifikatResult.add(e);
+        }
+      }
+      _sertifikatKelulusan.value = _listSertifikatResult
+          .where(
+            (e) => e.courseName.toLowerCase().contains(
+                  txSearch.text,
+                ),
+          )
+          .toSet()
+          .toList();
     }
-    _sertifikat.value.certificates = _listSertifikatResult
-        .where(
-          (e) => e.courseName.toLowerCase().contains(
-                txSearch.text,
-              ),
-        )
-        .toSet()
-        .toList();
     Future.delayed(const Duration(milliseconds: 300), () {
       _fnChangeLoading(false);
     });
   }
 
-  void fnSortCertificate() async {
+  void fnSortCertificate(String sortBy) async {
     _fnChangeLoading(true);
-    _sertifikat.value.certificates!
-        .sort(((a, b) => b.courseName.compareTo(a.courseName)));
+    _txtUrutkan.value = sortBy;
+    if (_indexTabSertif.value == 0) {
+      if (sortBy == 'Abjad') {
+        _sertifikatPenyelesaian
+            .sort(((a, b) => a.courseName.compareTo(b.courseName)));
+      }
+
+      if (sortBy == 'Terbaru') {
+        _sertifikatPenyelesaian
+            .sort(((a, b) => a.certificateDate.compareTo(b.certificateDate)));
+      }
+    }
+
+    if (_indexTabSertif.value == 1) {
+      if (sortBy == 'Abjad') {
+        _sertifikatKelulusan
+            .sort(((a, b) => a.courseName.compareTo(b.courseName)));
+      }
+
+      if (sortBy == 'Terbaru') {
+        _sertifikatKelulusan
+            .sort(((a, b) => a.certificateDate.compareTo(b.certificateDate)));
+      }
+    }
     Future.delayed(const Duration(milliseconds: 300), () {
       _fnChangeLoading(false);
     });
@@ -231,5 +297,18 @@ class ArkSertifikatController extends GetxController {
 
   void fnSharedCertificate() {
     Share.share('Saya telah mendapatkan sertifikat');
+  }
+
+  void fnShareToLinkedin(SertifikatDataEntity sertif) async {
+    final date = DateFormat.yMMM().parse(sertif.issueDate);
+    if (await canLaunchUrl(Uri.parse(
+        '$linkedinUrl&name=${sertif.courseName}&organizationId=26580730&issueYear=${date.year}&issueMonth=${date.month}&expirationYear=${date.year + 3}&expirationMonth=${date.month}&certUrl=${sertif.certificateUrl}&certId=${sertif.certificateId}'))) {
+      launchUrl(
+        Uri.parse(
+          '$linkedinUrl&name=${sertif.courseName}&organizationId=26580730&issueYear=${date.year}&issueMonth=${date.month}&expirationYear=${date.year + 3}&expirationMonth=${date.month}&certUrl=${sertif.certificateUrl}&certId=${sertif.certificateId}',
+        ),
+        mode: LaunchMode.externalApplication,
+      );
+    }
   }
 }

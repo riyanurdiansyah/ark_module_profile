@@ -54,6 +54,9 @@ class ArkProfileController extends GetxController {
   final Rx<String> _tokenWP = ''.obs;
   Rx<String> get tokenWP => _tokenWP;
 
+  final Rx<String> _tokenPrakerja = ''.obs;
+  Rx<String> get tokenPrakerja => _tokenPrakerja;
+
   final Rx<String> _userId = ''.obs;
   Rx<String> get userId => _userId;
 
@@ -122,6 +125,7 @@ class ArkProfileController extends GetxController {
     _isLogin.value = prefs.getBool('user_login') ?? false;
     _token.value = prefs.getString('token_access') ?? '';
     _tokenWP.value = prefs.getString('token_access_wp') ?? '';
+    _tokenPrakerja.value = prefs.getString('token_access_prakerja') ?? '';
     _avatar.value = prefs.getString('user_avatar') ?? '';
     _name.value = prefs.getString('user_name') ?? '';
     _email.value = prefs.getString('user_email') ?? '';

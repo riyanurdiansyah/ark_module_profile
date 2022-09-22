@@ -25,6 +25,11 @@ class SertifikatDataEntity {
   final String certificateUrl;
   final String certificateId;
   final int remainingGen;
+  final String tipe;
+  final String issuingOrganization;
+  final String issueDate;
+  final String credentialId;
+  final String credentialUrl;
 
   SertifikatDataEntity({
     required this.id,
@@ -33,5 +38,10 @@ class SertifikatDataEntity {
     required this.certificateUrl,
     required this.certificateId,
     required this.remainingGen,
+    required this.tipe,
+    required this.issuingOrganization,
+    required this.issueDate,
+    required this.credentialId,
+    required this.credentialUrl,
   });
 }

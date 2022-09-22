@@ -90,10 +90,13 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     );
     int code = response.statusCode ?? 500;
     if (code >= 500) {
-      throw CustomException(code, 'Error... failed connect to server');
+      throw CustomException(
+          code, 'Error Get Face Recog... failed connect to server');
     } else if (code != 200) {
       throw CustomException(
-          code, response.data['message'] ?? 'Failed... Please try again');
+          code,
+          response.data['message'] ??
+              'Failed Get Face Recog... Please try again');
     } else {
       return FaceRecogDTO.fromJson(response.data);
     }
@@ -197,5 +200,27 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
         .whenComplete(() => true)
         .then((value) => true)
         .catchError((error) => throw CustomException(500, error.toString()));
+  }
+
+  @override
+  Future<bool> updateProfilePrakerja(
+      String token, Map<String, Map<String, Object>> data) async {
+    final response = await dio.post(
+      updateProfileUrl,
+      data: data,
+      options: Options(headers: {
+        'Authorization': token,
+      }),
+    );
+    log("RESPONSE UPDATE PROFILE PRAKERJA: ${response.data}");
+    int code = response.statusCode ?? 500;
+    if (code >= 500) {
+      throw CustomException(code, 'Error... failed connect to server');
+    } else if (code != 200) {
+      throw CustomException(
+          code, response.data['message'] ?? 'Failed... Please try again');
+    } else {
+      return true;
+    }
   }
 }

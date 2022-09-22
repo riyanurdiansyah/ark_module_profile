@@ -17,9 +17,10 @@ class ArkEditProfileController extends GetxController {
 
   ArkEditProfileController(this._useCase);
 
+  final _pC = Get.find<ArkProfileController>();
+
   @override
   void onInit() async {
-    await _fnSetup();
     await fnGetProfile();
     await _fnStoreDataToVar();
     await fnGetProvinsi();
@@ -34,8 +35,6 @@ class ArkEditProfileController extends GetxController {
     super.onInit();
   }
 
-  final _pC = Get.find<ArkProfileController>();
-
   final Rx<bool> _isLoading = true.obs;
   Rx<bool> get isLoading => _isLoading;
 
@@ -45,9 +44,6 @@ class ArkEditProfileController extends GetxController {
   final Rx<ProfileEntity> _profile = ProfileEntity().obs;
   Rx<ProfileEntity> get profile => _profile;
 
-  final Rx<String> _token = ''.obs;
-  Rx<String> get token => _token;
-
   final Rx<String> _userProvinsi = ''.obs;
   Rx<String> get userProvinsi => _userProvinsi;
 
@@ -55,7 +51,7 @@ class ArkEditProfileController extends GetxController {
   RxList<ProvinsiDataEntity> get provinsi => _provinsi;
 
   final Rx<ProvinsiDataEntity> _newProvinsi =
-      ProvinsiDataEntity(id: -1, nama: '').obs;
+      const ProvinsiDataEntity(id: -1, nama: '').obs;
   Rx<ProvinsiDataEntity> get newProvinsi => _newProvinsi;
 
   final Rx<CityEntity> _city = const CityEntity(kotaKabupaten: []).obs;
@@ -88,10 +84,6 @@ class ArkEditProfileController extends GetxController {
   final Rx<JenisKelamin> _selectedGender = JenisKelamin.defaultGender.obs;
   Rx<JenisKelamin> get selectedGender => _selectedGender;
 
-  Future _fnSetup() async {
-    _token.value = _pC.token.value;
-  }
-
   Future _fnStoreDataToVar() async {
     _userProvinsi.value = _profile.value.data!.provinsi;
     _tcHp.text = _profile.value.data!.noHp;
@@ -121,7 +113,7 @@ class ArkEditProfileController extends GetxController {
   }
 
   Future fnGetProfile() async {
-    final response = await _useCase.getProfile(_token.value);
+    final response = await _useCase.getProfile(_pC.token.value);
     response.fold(
       ///IF RESPONSE IS ERROR
       (fail) {
@@ -226,12 +218,13 @@ class ArkEditProfileController extends GetxController {
           pendidikanTerakhir: _txtPendidikan.value,
         );
         await fnUpdateProfile(data);
+        fnUpdateProfilePrakerja();
       }
     }
   }
 
   Future fnUpdateProfile(ProfileDataEntity data) async {
-    final response = await _useCase.updateProfile(data, _token.value);
+    final response = await _useCase.updateProfile(data, _pC.token.value);
     response.fold(
       ///IF RESPONSE IS ERROR
       (fail) {
@@ -259,6 +252,93 @@ class ArkEditProfileController extends GetxController {
         }
       },
     );
+  }
+
+  void fnUpdateProfilePrakerja() async {
+    final nameJson = {
+      "field": {
+        "id": 1,
+        "type": "textbox",
+        "name": "Nama Lengkap",
+        "value": _tcName.text,
+      }
+    };
+
+    final hpJson = {
+      "field": {
+        "id": 86,
+        "value": _tcHp.text,
+      }
+    };
+
+    final birthDateJson = {
+      "field": {
+        "id": 88,
+        "value": _txtTanggalLahir.value,
+      }
+    };
+
+    final genderPrakerjaJson = {
+      "field": {
+        "id": 95,
+        "value": _selectedGender.value == JenisKelamin.pria
+            ? "L"
+            : _selectedGender.value == JenisKelamin.wanita
+                ? "P"
+                : "",
+      }
+    };
+
+    final provinceJson = {
+      "field": {
+        "id": 87,
+        "value": _newProvinsi.value.nama == 'Silahkan Pilih Provinsi'
+            ? ''
+            : _newProvinsi.value.nama,
+      }
+    };
+    final cityJson = {
+      "field": {
+        "id": 89,
+        "value": _txtCity.value,
+      }
+    };
+
+    final degreeJson = {
+      "field": {
+        "id": 90,
+        "value": _txtPendidikan.value,
+      }
+    };
+
+    final profesiJson = {
+      "field": {
+        "id": 73,
+        "value": _txtProfesi.value == 'Lainnya'
+            ? _tcProfesiLainnya.text
+            : _txtProfesi.value,
+      }
+    };
+
+    List<Map<String, Map<String, Object>>> listJson = [
+      nameJson,
+      hpJson,
+      birthDateJson,
+      genderPrakerjaJson,
+      provinceJson,
+      cityJson,
+      degreeJson,
+      profesiJson,
+    ];
+
+    if (_tcName.text != _profile.value.data!.fullname) {
+      await _useCase.updateProfilePrakerja(_pC.tokenPrakerja.value, nameJson);
+    }
+
+    if (_tcHp.text != _profile.value.data!.noHp) {
+      final response =
+          await _useCase.updateProfilePrakerja(_pC.tokenPrakerja.value, hpJson);
+    }
   }
 
   bool get isCompletedForm =>

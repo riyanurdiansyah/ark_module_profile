@@ -1,3 +1,4 @@
+import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_profile/utils/app_constanta.dart';
 import 'package:ark_module_profile/utils/app_style_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,20 +11,18 @@ import 'package:shimmer/shimmer.dart';
 class SertifikatCard extends StatelessWidget {
   const SertifikatCard({
     Key? key,
-    required this.imageUrl,
-    required this.title,
-    required this.date,
+    required this.sertif,
     required this.onTapUnduh,
     required this.downloadProgress,
     required this.index,
     required this.onTapShare,
+    required this.onTapShareLinkedin,
   }) : super(key: key);
 
-  final String imageUrl;
-  final String title;
-  final String date;
+  final SertifikatDataEntity sertif;
   final VoidCallback onTapUnduh;
   final VoidCallback onTapShare;
+  final VoidCallback onTapShareLinkedin;
   final RxList<int> downloadProgress;
   final int index;
 
@@ -34,7 +33,7 @@ class SertifikatCard extends StatelessWidget {
         SizedBox(
           width: Get.width / 1.3,
           child: CachedNetworkImage(
-            imageUrl: imageUrl,
+            imageUrl: sertif.certificateUrl,
             placeholder: (_, __) => Shimmer.fromColors(
               baseColor: Colors.grey[300]!,
               highlightColor: Colors.grey[100]!,
@@ -54,7 +53,7 @@ class SertifikatCard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Text(
-            parseHtmlString(title),
+            parseHtmlString(sertif.courseName),
             textAlign: TextAlign.center,
             style: AppStyleText.styleMontserrat(
               fontSize: 12,
@@ -68,7 +67,7 @@ class SertifikatCard extends StatelessWidget {
           height: 8,
         ),
         Text(
-          date,
+          sertif.certificateDate,
           textAlign: TextAlign.center,
           style: AppStyleText.styleSourceSansPro(
             fontSize: 10.5,
@@ -149,7 +148,7 @@ class SertifikatCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () => onTapShareLinkedin(),
                           child: Container(
                             height: 36,
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -218,7 +217,7 @@ class SertifikatCard extends StatelessWidget {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                'Kursus Sertifikasi Brevet Pajak A/B Terapan',
+                                parseHtmlString(sertif.courseName),
                                 style: AppStyleText.styleSourceSansPro(
                                   height: 1.4,
                                   fontSize: 13,
@@ -256,7 +255,7 @@ class SertifikatCard extends StatelessWidget {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                'Arkademi',
+                                sertif.issuingOrganization,
                                 style: AppStyleText.styleSourceSansPro(
                                   fontSize: 13,
                                   color: const Color(0xFF333539),
@@ -293,7 +292,7 @@ class SertifikatCard extends StatelessWidget {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                'July 2022',
+                                sertif.issueDate,
                                 style: AppStyleText.styleSourceSansPro(
                                   fontSize: 13,
                                   color: const Color(0xFF333539),
@@ -330,7 +329,7 @@ class SertifikatCard extends StatelessWidget {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                'ABCDEFGHIJ',
+                                sertif.credentialId,
                                 style: AppStyleText.styleSourceSansPro(
                                   fontSize: 13,
                                   color: const Color(0xFF333539),
@@ -367,7 +366,7 @@ class SertifikatCard extends StatelessWidget {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                imageUrl,
+                                sertif.credentialUrl,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppStyleText.styleSourceSansPro(

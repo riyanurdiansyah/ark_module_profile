@@ -30,4 +30,7 @@ abstract class ProfileRepository {
 
   Future<Either<Failure, bool>> updateCoin(
       String id, Map<String, dynamic> data);
+
+  Future<Either<Failure, bool>> updateProfilePrakerja(
+      String token, Map<String, Map<String, Object>> data);
 }

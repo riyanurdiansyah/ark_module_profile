@@ -24,8 +24,14 @@ class ArkProfilePage extends StatelessWidget {
       backgroundColor: const Color(0xFFF3F4F5),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: null,
-        title: const Text('Profile'),
+        title: Text(
+          'Profile',
+          style: AppStyleText.styleMontserrat(
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+            color: Colors.white,
+          ),
+        ),
         centerTitle: false,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -181,71 +187,135 @@ class ArkProfilePage extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 20),
-                    child: Row(
+                  return SizedBox(
+                    height: Get.height / 1.2,
+                    width: double.infinity,
+                    child: Column(
                       children: [
-                        Expanded(
-                          flex: 2,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.asset(
-                              'assets/images/fr_default_face.png',
-                              fit: BoxFit.fill,
-                              height: 70,
-                              width: 70,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Expanded(
-                          flex: 8,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 20),
                           child: Row(
                             children: [
-                              const SizedBox(width: 10),
-                              OutlinedButton(
-                                onPressed: () =>
-                                    Get.toNamed(AppRouteName.signin),
-                                style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(
-                                  color: kPrimaryColor,
-                                )),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: Text(
-                                    'Login',
-                                    style: AppStyleText.styleMontserrat(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: kPrimaryColor),
+                              Expanded(
+                                flex: 2,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.asset(
+                                    'assets/images/fr_default_face.png',
+                                    fit: BoxFit.fill,
+                                    height: 70,
+                                    width: 70,
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 12),
-                              OutlinedButton(
-                                onPressed: () =>
-                                    Get.toNamed(AppRouteName.signup),
-                                style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(
-                                  color: kPrimaryColor,
-                                )),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: Text(
-                                    'Daftar',
-                                    style: AppStyleText.styleMontserrat(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: kPrimaryColor),
-                                  ),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              Expanded(
+                                flex: 8,
+                                child: Row(
+                                  children: [
+                                    const SizedBox(width: 10),
+                                    OutlinedButton(
+                                      onPressed: () =>
+                                          Get.toNamed(AppRouteName.signin),
+                                      style: OutlinedButton.styleFrom(
+                                          side: const BorderSide(
+                                        color: kPrimaryColor,
+                                      )),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        child: Text(
+                                          'Login',
+                                          style: AppStyleText.styleMontserrat(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: kPrimaryColor),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    OutlinedButton(
+                                      onPressed: () =>
+                                          Get.toNamed(AppRouteName.signup),
+                                      style: OutlinedButton.styleFrom(
+                                          side: const BorderSide(
+                                        color: kPrimaryColor,
+                                      )),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        child: Text(
+                                          'Daftar',
+                                          style: AppStyleText.styleMontserrat(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: kPrimaryColor),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 18),
+                          color: Colors.white,
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Akun Saya',
+                                style: AppStyleText.styleMontserrat(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              SizedBox(
+                                height: 25,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Sertifikat Saya',
+                                        style: AppStyleText.styleMontserrat(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 11.5,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: 12,
+                                      color: Color(0xFFC0C2C6),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Expanded(
+                          child: Container(
+                            color: Colors.white,
                           ),
                         ),
                       ],
