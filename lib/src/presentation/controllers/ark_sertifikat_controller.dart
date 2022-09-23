@@ -241,7 +241,9 @@ class ArkSertifikatController extends GetxController {
           .toSet()
           .toList();
     } else {
-      _fnChangeLoading(true);
+      if (_sertifikatKelulusan.isNotEmpty) {
+        _fnChangeLoading(true);
+      }
       log("SEARCH SERTIF KELULUSAN");
       for (var e in _sertifikat.value.certificates!
           .where((e) => e.tipe == 'kelulusan')

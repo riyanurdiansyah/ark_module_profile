@@ -104,7 +104,9 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   @override
   Future<SertifikatDTO> getAllCertificate(String userId) async {
-    final response = await dio.get("$sertifUrl/$userId");
+    // final response = await dio.get("$sertifUrl/$userId");
+    final response = await dio.get(
+        "http://apimember.arkademi.com/api/arkademi/get_user_certificate/291976");
     log("RESPONSE GET ALL CERTIFICATE : ${response.data}");
     int code = response.statusCode ?? 500;
     if (code >= 500) {
