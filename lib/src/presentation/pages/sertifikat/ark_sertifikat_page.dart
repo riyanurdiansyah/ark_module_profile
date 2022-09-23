@@ -116,9 +116,9 @@ class ArkSertifikatPage extends StatelessWidget {
                     ),
                     listMenu: <PopupMenuItem>[
                       PopupMenuItem(
-                        onTap: () => _sC.fnSortCertificate('Abjad'),
+                        onTap: () => _sC.fnSortCertificate('Terbaru'),
                         child: Text(
-                          'Abjad',
+                          'Terbaru',
                           style: AppStyleText.styleMontserrat(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -127,9 +127,20 @@ class ArkSertifikatPage extends StatelessWidget {
                         ),
                       ),
                       PopupMenuItem(
-                        onTap: () => _sC.fnSortCertificate('Terbaru'),
+                        onTap: () => _sC.fnSortCertificate('A - Z'),
                         child: Text(
-                          'Terbaru',
+                          'A - Z',
+                          style: AppStyleText.styleMontserrat(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        onTap: () => _sC.fnSortCertificate('Z - A'),
+                        child: Text(
+                          'Z - A',
                           style: AppStyleText.styleMontserrat(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
