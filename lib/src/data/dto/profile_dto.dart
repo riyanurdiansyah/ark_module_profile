@@ -31,20 +31,21 @@ class ProfileDataDTO extends ProfileDataEntity {
   });
 
   factory ProfileDataDTO.fromJson(Map<String, dynamic> json) => ProfileDataDTO(
-        bio: json["bio"],
-        facebook: json["facebook"],
-        fullname: json["fullname"],
-        jenisKelamin: json["jenis_kelamin"],
-        kota: json["kota"],
-        location: json["location"],
-        noHp: json["no_hp"],
-        pendidikanTerakhir: json["pendidikan_terakhir"],
-        profession: json["profession"],
-        provinsi: json["provinsi"],
-        tglLahir: json["tgl_lahir"],
-        twitter: json["twitter"],
+        bio: json["bio"] ?? "",
+        facebook: json["facebook"] ?? "",
+        fullname: json["fullname"] ?? "",
+        jenisKelamin: json["jenis_kelamin"] ?? "",
+        kota: json["kota"] ?? "",
+        location: json["location"] ?? "",
+        noHp: json["no_hp"] ?? "",
+        pendidikanTerakhir: json["pendidikan_terakhir"] ?? "",
+        profession: json["profession"] ?? "",
+        provinsi: json["provinsi"] ?? "",
+        tglLahir: json["tgl_lahir"] ?? "",
+        twitter: json["twitter"] ?? "",
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         "fullname": fullname,
         "location": location,

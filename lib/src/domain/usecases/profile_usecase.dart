@@ -46,4 +46,8 @@ class ProfileUseCase {
   Future<Either<Failure, bool>> updateCoin(
           String id, Map<String, dynamic> data) async =>
       await repository.updateCoin(id, data);
+
+  Future<Either<Failure, bool>> updateProfilePrakerja(
+          String id, Map<String, Map<String, Object>> data) async =>
+      await repository.updateProfilePrakerja(id, data);
 }

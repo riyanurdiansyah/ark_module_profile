@@ -21,3 +21,6 @@ const String provinsiUrl =
 
 const String cityUrl =
     "https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi";
+
+const String linkedinUrl =
+    "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAM";

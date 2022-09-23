@@ -75,7 +75,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
         return const Left(
           HttpFailure(
             500,
-            'Error... failed connect to server \nPlease check your connection',
+            'Get Face Recog \nFailed connect to server \nPlease check your connection',
           ),
         );
       }
@@ -185,6 +185,26 @@ class ProfileRepositoryImpl implements ProfileRepository {
       String id, Map<String, dynamic> data) async {
     try {
       final update = await dataSource.updateCoin(id, data);
+      return Right(update);
+    } catch (e) {
+      if (e is CustomException) {
+        return Left(HttpFailure(e.code, e.message));
+      } else {
+        return const Left(
+          HttpFailure(
+            500,
+            'Error... failed connect to server \nPlease check your connection',
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateProfilePrakerja(
+      String token, Map<String, Map<String, Object>> data) async {
+    try {
+      final update = await dataSource.updateProfilePrakerja(token, data);
       return Right(update);
     } catch (e) {
       if (e is CustomException) {

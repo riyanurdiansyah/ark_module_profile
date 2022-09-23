@@ -8,8 +8,8 @@ import 'sertifikat_card.dart';
 import 'sertifikat_card_shimmer.dart';
 import 'sertifikat_empty_widget.dart';
 
-class SertifikatPenyelesaianTab extends StatelessWidget {
-  SertifikatPenyelesaianTab({Key? key}) : super(key: key);
+class SertifikatKelulusanTab extends StatelessWidget {
+  SertifikatKelulusanTab({Key? key}) : super(key: key);
 
   final _sC = Get.find<ArkSertifikatController>();
 
@@ -58,7 +58,7 @@ class SertifikatPenyelesaianTab extends StatelessWidget {
                   child: RichText(
                     textAlign: TextAlign.left,
                     text: TextSpan(
-                      text: 'Sertifikat Penyelesaian ',
+                      text: 'Sertifikat Kompentensi Kelulusan ',
                       style: AppStyleText.styleSourceSansPro(
                         fontSize: 13,
                         fontStyle: FontStyle.italic,
@@ -78,22 +78,12 @@ class SertifikatPenyelesaianTab extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: 'menyelesaikan seluruh seri dan kuis ',
+                          text: 'dinyatakan lulus dari ujian akhir. ',
                           style: AppStyleText.styleSourceSansPro(
                             fontSize: 13,
                             fontStyle: FontStyle.italic,
                             color: Colors.black,
                             fontWeight: FontWeight.w700,
-                            height: 1.4,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "dalam kursus (tanpa nilai minimum).",
-                          style: AppStyleText.styleSourceSansPro(
-                            fontSize: 13,
-                            fontStyle: FontStyle.italic,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
                             height: 1.4,
                           ),
                         ),
@@ -120,10 +110,10 @@ class SertifikatPenyelesaianTab extends StatelessWidget {
                     errorMsg: _sC.sertifikat.value.messageError,
                     refreshBtn: () => _sC.fnGetAllCertificate(),
                   );
-                } else if (_sC.sertifikatPenyelesaian.isEmpty) {
+                } else if (_sC.sertifikatKelulusan.isEmpty) {
                   return const SertifikatEmptyWidget();
                 } else {
-                  final sertif = _sC.sertifikatPenyelesaian;
+                  final sertif = _sC.sertifikatKelulusan;
                   return Column(
                     children: List.generate(
                       sertif.length,

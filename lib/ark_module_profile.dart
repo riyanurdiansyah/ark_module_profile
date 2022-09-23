@@ -21,6 +21,7 @@ export 'src/presentation/pages/ark_profile_page.dart';
 export 'src/presentation/pages/face_recog/change_face_recognition_page.dart';
 export 'src/presentation/pages/sertifikat/ark_sertifikat_page.dart';
 export 'src/presentation/pages/ark_edit_profile_page.dart';
+export 'src/presentation/pages/sertifikat/ark_cek_sertifikat_page.dart';
 
 ///WIDGET
 export 'src/presentation/pages/sertifikat/widget/custom_popup_menu.dart';

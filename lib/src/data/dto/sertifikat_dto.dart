@@ -24,6 +24,11 @@ class SertifikatDataDTO extends SertifikatDataEntity {
     required super.certificateUrl,
     required super.certificateId,
     required super.remainingGen,
+    required super.tipe,
+    required super.issuingOrganization,
+    required super.issueDate,
+    required super.credentialId,
+    required super.credentialUrl,
   });
 
   factory SertifikatDataDTO.fromJson(Map<String, dynamic> json) =>
@@ -34,5 +39,10 @@ class SertifikatDataDTO extends SertifikatDataEntity {
         certificateUrl: json['cert_url'] ?? '',
         certificateId: json['cert_id'] ?? '',
         remainingGen: json['remaining_gen'] ?? '',
+        tipe: json['tipe'] ?? 'penyelesaian',
+        issuingOrganization: json['issuing_Organization'] ?? '',
+        issueDate: json['issue_date'] ?? '',
+        credentialId: json['credential_id'] ?? '',
+        credentialUrl: json['credential_url'] ?? '',
       );
 }

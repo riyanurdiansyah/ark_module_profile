@@ -23,4 +23,7 @@ abstract class ProfileRemoteDataSource {
   Future<bool> updateProfile(ProfileDataEntity profile, String token);
 
   Future<bool> updateCoin(String id, Map<String, dynamic> data);
+
+  Future<bool> updateProfilePrakerja(
+      String token, Map<String, Map<String, Object>> data);
 }
