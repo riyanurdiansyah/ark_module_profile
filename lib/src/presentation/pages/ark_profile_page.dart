@@ -46,10 +46,10 @@ class ArkProfilePage extends StatelessWidget {
           ),
         ),
       ),
-      body: SizedBox(
-        width: double.infinity,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: Get.width,
+          height: Get.height,
           child: Column(
             children: [
               Obx(
@@ -759,7 +759,7 @@ class ArkProfilePage extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 4),
                                     child: Text(
-                                      "Keluars",
+                                      "Keluar",
                                       style: AppStyleText.styleMontserrat(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 12,
