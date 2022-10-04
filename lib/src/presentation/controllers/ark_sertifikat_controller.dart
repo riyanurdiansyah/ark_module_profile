@@ -270,9 +270,14 @@ class ArkSertifikatController extends GetxController {
     _fnChangeLoading(true);
     _txtUrutkan.value = sortBy;
     if (_indexTabSertif.value == 0) {
-      if (sortBy == 'Abjad') {
+      if (sortBy == 'A - Z') {
         _sertifikatPenyelesaian
             .sort(((a, b) => a.courseName.compareTo(b.courseName)));
+      }
+
+      if (sortBy == 'Z - A') {
+        _sertifikatPenyelesaian
+            .sort(((a, b) => b.courseName.compareTo(a.courseName)));
       }
 
       if (sortBy == 'Terbaru') {
@@ -282,9 +287,14 @@ class ArkSertifikatController extends GetxController {
     }
 
     if (_indexTabSertif.value == 1) {
-      if (sortBy == 'Abjad') {
+      if (sortBy == 'A - Z') {
         _sertifikatKelulusan
             .sort(((a, b) => a.courseName.compareTo(b.courseName)));
+      }
+
+      if (sortBy == 'Z - A') {
+        _sertifikatKelulusan
+            .sort(((a, b) => b.courseName.compareTo(a.courseName)));
       }
 
       if (sortBy == 'Terbaru') {

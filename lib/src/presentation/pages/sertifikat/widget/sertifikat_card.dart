@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_profile/utils/app_constanta.dart';
+import 'package:ark_module_profile/utils/app_route_name.dart';
 import 'package:ark_module_profile/utils/app_style_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
@@ -30,20 +33,32 @@ class SertifikatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: Get.width / 1.3,
-          child: CachedNetworkImage(
-            imageUrl: sertif.certificateUrl,
-            placeholder: (_, __) => Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Container(
-                color: Colors.grey,
-                height: 250,
+        GestureDetector(
+          onTap: () {
+            log("COURSE : ${sertif.courseName}");
+            Get.toNamed(AppRouteName.showSertif, arguments: [
+              sertif.courseName,
+              sertif.certificateUrl,
+            ]);
+          },
+          child: Hero(
+            tag: sertif.courseName,
+            child: SizedBox(
+              width: Get.width / 1.3,
+              child: CachedNetworkImage(
+                imageUrl: sertif.certificateUrl,
+                placeholder: (_, __) => Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    color: Colors.grey,
+                    height: 250,
+                  ),
+                ),
+                errorWidget: (_, __, ___) => Image.asset(
+                  'assets/images/sertif-blur.png',
+                ),
               ),
-            ),
-            errorWidget: (_, __, ___) => Image.asset(
-              'assets/images/sertif-blur.png',
             ),
           ),
         ),
@@ -147,44 +162,61 @@ class SertifikatCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        InkWell(
-                          onTap: () => onTapShareLinkedin(),
-                          child: Container(
-                            height: 36,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              gradient: const LinearGradient(
-                                end: Alignment.centerRight,
-                                begin: Alignment.centerLeft,
-                                colors: [
-                                  Color(0xFFFF8017),
-                                  Color(0xFFFF9417),
-                                  Color(0xFFFF9417),
-                                  Color(0xFFFF9417),
-                                ],
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              onTap: () => onTapShareLinkedin(),
+                              child: Container(
+                                height: 36,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  gradient: const LinearGradient(
+                                    end: Alignment.centerRight,
+                                    begin: Alignment.centerLeft,
+                                    colors: [
+                                      Color(0xFFFF8017),
+                                      Color(0xFFFF9417),
+                                      Color(0xFFFF9417),
+                                      Color(0xFFFF9417),
+                                    ],
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/job_ready_course/edit_profile.png',
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text(
+                                      'Taruh di Profile LinkedIn',
+                                      style: AppStyleText.styleMontserrat(
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image.asset(
-                                  'assets/images/job_ready_course/edit_profile.png',
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  'Taruh di Profile LinkedIn',
-                                  style: AppStyleText.styleMontserrat(
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                )
-                              ],
+                            const SizedBox(
+                              height: 6,
                             ),
-                          ),
+                            Text(
+                              '*Pastikan kamu memiliki aplikasi LinkedIn untuk menggunakan fitur ini',
+                              style: AppStyleText.styleSourceSansPro(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 8,
+                                color: const Color(0xFF838589),
+                              ),
+                            )
+                          ],
                         ),
                         const SizedBox(
                           height: 14,
