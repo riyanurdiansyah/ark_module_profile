@@ -759,7 +759,7 @@ class ArkProfilePage extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 4),
                                     child: Text(
-                                      "Keluar",
+                                      "Keluars",
                                       style: AppStyleText.styleMontserrat(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 12,
