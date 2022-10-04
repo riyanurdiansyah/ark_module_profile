@@ -25,7 +25,7 @@ class ArkProfilePage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Profile',
+          'Profiles',
           style: AppStyleText.styleMontserrat(
             fontWeight: FontWeight.w700,
             fontSize: 14,
