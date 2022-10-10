@@ -307,9 +307,8 @@ class ArkSertifikatController extends GetxController {
     });
   }
 
-  void fnSharedCertificate(SertifikatDataEntity sertif) {
-    Share.share(
-        'Saya telah menyelesaikan kursus ${sertif.courseName} yang diselenggarakan oleh Arkademi. Cek link berikut ini: ${sertif.certificateUrl}');
+  void fnSharedCertificate(String caption) {
+    Share.share(caption);
   }
 
   void fnShareToLinkedin(SertifikatDataEntity sertif) async {
