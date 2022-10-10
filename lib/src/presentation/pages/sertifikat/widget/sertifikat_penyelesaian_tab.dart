@@ -131,7 +131,7 @@ class SertifikatPenyelesaianTab extends StatelessWidget {
                       (i) => SertifikatCard(
                         sertif: sertif[i],
                         onTapUnduh: () => _sC.fnCheckPermission(i),
-                        onTapShare: () => _sC.fnSharedCertificate(),
+                        onTapShare: () => _sC.fnSharedCertificate(sertif[i]),
                         onTapShareLinkedin: () async {
                           await AppFirebaseAnalyticsService()
                               .addLog("click_share_linkedin_penyelesaian");
