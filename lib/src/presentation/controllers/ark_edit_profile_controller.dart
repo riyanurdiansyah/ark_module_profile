@@ -349,10 +349,9 @@ class ArkEditProfileController extends GetxController {
 
   Future fnUpdateCoin() async {
     if (_pC.coin.value.isCompleted == false) {
-      int coinNow = _pC.coin.value.coins ?? 0;
+      int coinNow = _pC.coin.value.coins;
       int coinUpdate = 0;
-      if (_pC.coin.value.isOldUser == null ||
-          _pC.coin.value.isOldUser == true) {
+      if (_pC.coin.value.isOldUser == true) {
         coinUpdate = coinNow + 10000;
       } else {
         coinUpdate = coinNow + 5000;
