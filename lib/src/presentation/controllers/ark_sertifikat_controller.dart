@@ -3,9 +3,7 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_profile/src/core/exception_handling.dart';
-import 'package:ark_module_profile/utils/app_snackbar.dart';
-import 'package:ark_module_profile/utils/app_url.dart';
+import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
@@ -307,8 +305,8 @@ class ArkSertifikatController extends GetxController {
     });
   }
 
-  void fnSharedCertificate() {
-    Share.share('Saya telah mendapatkan sertifikat');
+  void fnSharedCertificate(String caption) {
+    Share.share(caption);
   }
 
   void fnShareToLinkedin(SertifikatDataEntity sertif) async {

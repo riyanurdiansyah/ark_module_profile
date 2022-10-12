@@ -1,11 +1,8 @@
 import 'dart:developer';
-
 import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_profile/src/core/exception_handling.dart';
 import 'package:ark_module_profile/src/domain/entities/face_recog_entity.dart';
-import 'package:ark_module_profile/utils/app_dialog.dart';
-import 'package:ark_module_profile/utils/app_route_name.dart';
-import 'package:ark_module_profile/utils/app_url.dart';
+import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -108,7 +105,13 @@ class ArkProfileController extends GetxController {
   final Rx<ProfileEntity> _profile = ProfileEntity().obs;
   Rx<ProfileEntity> get profile => _profile;
 
-  final Rx<CoinEntity> _coin = CoinEntity().obs;
+  final Rx<CoinEntity> _coin = CoinEntity(
+    coins: 0,
+    isCompleted: false,
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
+    isOldUser: false,
+  ).obs;
   Rx<CoinEntity> get coin => _coin;
 
   final Rx<FaceRecogEntity> _faceRecog =

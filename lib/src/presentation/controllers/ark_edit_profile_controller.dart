@@ -1,12 +1,10 @@
 import 'dart:developer';
 
 import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_profile/src/core/exception_handling.dart';
 import 'package:ark_module_profile/src/data/dto/provinsi_dto.dart';
 import 'package:ark_module_profile/src/domain/entities/city_entity.dart';
 import 'package:ark_module_profile/src/domain/entities/provinsi_entity.dart';
-import 'package:ark_module_profile/utils/app_constanta.dart';
-import 'package:ark_module_profile/utils/app_dialog.dart';
+import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -351,10 +349,9 @@ class ArkEditProfileController extends GetxController {
 
   Future fnUpdateCoin() async {
     if (_pC.coin.value.isCompleted == false) {
-      int coinNow = _pC.coin.value.coins ?? 0;
+      int coinNow = _pC.coin.value.coins;
       int coinUpdate = 0;
-      if (_pC.coin.value.isOldUser == null ||
-          _pC.coin.value.isOldUser == true) {
+      if (_pC.coin.value.isOldUser == true) {
         coinUpdate = coinNow + 10000;
       } else {
         coinUpdate = coinNow + 5000;

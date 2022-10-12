@@ -3,7 +3,7 @@ import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_profile/src/data/dto/city_dto.dart';
 import 'package:ark_module_profile/src/data/dto/face_recog_dto.dart';
 import 'package:ark_module_profile/src/data/dto/provinsi_dto.dart';
-import 'package:ark_module_profile/utils/app_url.dart';
+import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 
@@ -68,12 +68,15 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
         if (event.data() != null) {
           if (event.exists) {
             return CoinDTO.fromJson(event.data()!);
-          } else {
-            return CoinDTO();
           }
-        } else {
-          return CoinDTO();
         }
+        return CoinDTO(
+          coins: 0,
+          isCompleted: false,
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now(),
+          isOldUser: false,
+        );
       },
     );
   }
@@ -105,8 +108,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   @override
   Future<SertifikatDTO> getAllCertificate(String userId) async {
     // final response = await dio.get("$sertifUrl/$userId");
-    final response = await dio.get(
-        "http://apimember.arkademi.com/api/arkademi/get_user_certificate/291976");
+    final response = await dio.get("$listCertificateUrl/$userId");
     log("RESPONSE GET ALL CERTIFICATE : ${response.data}");
     int code = response.statusCode ?? 500;
     if (code >= 500) {

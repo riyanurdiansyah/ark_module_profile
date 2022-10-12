@@ -1,12 +1,12 @@
 import 'package:ark_module_profile/src/domain/entities/coin_entity.dart';
 
 class CoinDTO extends CoinEntity {
-  CoinDTO({
-    super.coins,
-    super.isCompleted,
-    super.isOldUser,
-    super.createdAt,
-    super.updatedAt,
+  const CoinDTO({
+    required super.coins,
+    required super.isCompleted,
+    required super.isOldUser,
+    required super.createdAt,
+    required super.updatedAt,
   });
 
   factory CoinDTO.fromJson(Map<String, dynamic> json) => CoinDTO(

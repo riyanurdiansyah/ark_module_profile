@@ -1,7 +1,7 @@
 import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_profile/src/data/dto/provinsi_dto.dart';
 import 'package:ark_module_profile/src/domain/entities/provinsi_entity.dart';
-import 'package:ark_module_profile/utils/app_url.dart';
+import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

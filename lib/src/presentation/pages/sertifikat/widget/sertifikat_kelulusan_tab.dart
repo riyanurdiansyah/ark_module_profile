@@ -1,6 +1,5 @@
-import 'package:ark_module_profile/src/helper/firebase_analytics.dart';
 import 'package:ark_module_profile/src/presentation/controllers/ark_sertifikat_controller.dart';
-import 'package:ark_module_profile/utils/app_style_text.dart';
+import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -121,7 +120,8 @@ class SertifikatKelulusanTab extends StatelessWidget {
                       (i) => SertifikatCard(
                         sertif: sertif[i],
                         onTapUnduh: () => _sC.fnCheckPermission(i),
-                        onTapShare: () => _sC.fnSharedCertificate(),
+                        onTapShare: () => _sC.fnSharedCertificate(
+                            'Saya telah menyelesaikan dan lulus proyek akhir dalam kursus ${sertif[i].courseName} yang diselenggarakan oleh Arkademi. Cek link berikut ini: ${sertif[i].certificateUrl}'),
                         onTapShareLinkedin: () async {
                           await AppFirebaseAnalyticsService()
                               .addLog("click_share_linkedin_kelulusan");
