@@ -1,4 +1,4 @@
-import 'package:ark_module_profile/utils/app_style_text.dart';
+import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:flutter/material.dart';
 
 class ErrorImageWithTextWidget extends StatelessWidget {

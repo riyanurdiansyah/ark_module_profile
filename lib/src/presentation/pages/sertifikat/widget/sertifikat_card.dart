@@ -1,9 +1,7 @@
 import 'dart:developer';
 
 import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_profile/utils/app_constanta.dart';
-import 'package:ark_module_profile/utils/app_route_name.dart';
-import 'package:ark_module_profile/utils/app_style_text.dart';
+import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';

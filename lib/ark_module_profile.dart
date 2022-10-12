@@ -43,7 +43,3 @@ export 'src/data/dto/coin_dto.dart';
 export 'src/data/dto/course_dto.dart';
 export 'src/data/dto/profile_dto.dart';
 export 'src/data/dto/sertifikat_dto.dart';
-
-///CORE
-export 'src/core/exception.dart';
-export 'src/core/failures.dart';

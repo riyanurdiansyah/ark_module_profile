@@ -1,6 +1,5 @@
-import 'package:ark_module_profile/src/helper/firebase_analytics.dart';
 import 'package:ark_module_profile/src/presentation/controllers/ark_sertifikat_controller.dart';
-import 'package:ark_module_profile/utils/app_style_text.dart';
+import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
