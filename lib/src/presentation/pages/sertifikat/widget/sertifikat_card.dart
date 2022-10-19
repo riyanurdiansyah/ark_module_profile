@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
@@ -45,7 +43,6 @@ class SertifikatCard extends StatelessWidget {
               width: Get.width / 1.3,
               child: CachedNetworkImage(
                 imageUrl: sertif.certificateUrl,
-                useOldImageOnUrlChange: true,
                 placeholder: (_, __) => Shimmer.fromColors(
                   baseColor: Colors.grey[300]!,
                   highlightColor: Colors.grey[100]!,

@@ -1,12 +1,7 @@
-import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_profile/src/data/dto/city_dto.dart';
-import 'package:ark_module_profile/src/data/dto/face_recog_dto.dart';
-import 'package:ark_module_profile/src/data/dto/provinsi_dto.dart';
+import 'package:ark_module_setup/ark_module_setup.dart';
 
-abstract class ProfileRemoteDataSource {
+abstract class ArkProfileRemoteDataSource {
   Future<ProfileDTO> getProfile(String token);
-
-  Future<List<CourseDTO>> getCourse(String token);
 
   Stream<CoinDTO> getCoin(String userId);
 
@@ -26,4 +21,6 @@ abstract class ProfileRemoteDataSource {
 
   Future<bool> updateProfilePrakerja(
       String token, Map<String, Map<String, Object>> data);
+
+  Future<List<MyCourseDTO>> getMyCourse(String token);
 }

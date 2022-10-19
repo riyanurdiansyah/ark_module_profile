@@ -1,18 +1,15 @@
 import 'dart:developer';
 import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_profile/src/domain/entities/face_recog_entity.dart';
 import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ArkProfileController extends GetxController {
-  final ProfileUseCase _useCase;
-
-  ArkProfileController(this._useCase);
+  final ArkProfileUseCase _useCase = ArkProfileUseCase(
+      ArkProfileRepositoryImpl(ArkProfileRemoteDataSourceImpl()));
 
   @override
   void onClose() {
@@ -23,13 +20,13 @@ class ArkProfileController extends GetxController {
   @override
   void onInit() async {
     log('ARK PROFILE CONTROLLER INIT');
-    await _fnSetup();
+    await _setup();
     if (_isLogin.value) {
-      await fnGetProfile();
-      _fnGetFaceRecog();
-      await fnGetCourse();
+      await getProfile();
+      getMyCourse();
+      _getFaceRecog();
     }
-    await _fnChangeLoading(false);
+    await _changeLoading(false);
     super.onInit();
   }
 
@@ -90,19 +87,36 @@ class ArkProfileController extends GetxController {
   final Rx<bool> _isLoading = true.obs;
   Rx<bool> get isLoading => _isLoading;
 
+  final Rx<bool> _isLoadingCourse = true.obs;
+  Rx<bool> get isLoadingCourse => _isLoadingCourse;
+
   final Rx<bool> _isLoadingFaceRecog = true.obs;
   Rx<bool> get isLoadingFaceRecog => _isLoadingFaceRecog;
 
-  String _errorMessage = '';
+  final String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
-  final Rx<int> _jmlKelasSelesai = 0.obs;
-  Rx<int> get jmlKelasSelesai => _jmlKelasSelesai;
+  final RxList<MyCourseEntity> _listCourse = <MyCourseEntity>[].obs;
+  RxList<MyCourseEntity> get listCourse => _listCourse;
 
-  final RxList<CourseEntity> _listCourse = <CourseEntity>[].obs;
-  RxList<CourseEntity> get listCourse => _listCourse;
-
-  final Rx<ProfileEntity> _profile = ProfileEntity().obs;
+  final Rx<ProfileEntity> _profile = ProfileEntity(
+    status: false,
+    tab: '',
+    data: ProfileDataEntity(
+      fullname: '',
+      location: '',
+      bio: '',
+      facebook: '',
+      twitter: '',
+      profession: '',
+      tglLahir: '',
+      provinsi: '',
+      kota: '',
+      jenisKelamin: '',
+      noHp: '',
+      pendidikanTerakhir: '',
+    ),
+  ).obs;
   Rx<ProfileEntity> get profile => _profile;
 
   final Rx<CoinEntity> _coin = CoinEntity(
@@ -119,11 +133,15 @@ class ArkProfileController extends GetxController {
 
   Rx<FaceRecogEntity> get faceRecog => _faceRecog;
 
-  Future _fnChangeLoading(bool val) async {
+  Future _changeLoading(bool val) async {
     _isLoading.value = val;
   }
 
-  Future _fnSetup() async {
+  Future _fnChangeLoadingCourse(bool val) async {
+    _isLoadingCourse.value = val;
+  }
+
+  Future _setup() async {
     prefs = await SharedPreferences.getInstance();
     _isLogin.value = prefs.getBool('user_login') ?? false;
     _token.value = prefs.getString('token_access') ?? '';
@@ -142,40 +160,46 @@ class ArkProfileController extends GetxController {
     _city.value = prefs.getString('user_city') ?? '';
   }
 
-  Future fnGetProfile() async {
-    _fnChangeLoading(true);
+  Future getProfile() async {
+    _changeLoading(true);
     final response = await _useCase.getProfile(_token.value);
     response.fold(
       ///IF RESPONSE IS ERROR
-      (fail) {
-        if (fail is HttpFailure) {
-          Fluttertoast.showToast(msg: "Error ${fail.code}x : ${fail.message}");
-          _errorMessage = fail.message;
-        } else {
-          _errorMessage =
-              'Failed connect to server \n Please check your connection';
-        }
-        _profile.value = ProfileEntity.withError(errorMessage);
-      },
+      (fail) => ExceptionHandle.execute(fail),
 
       ///IF RESPONSE SUCCESS
       (data) async {
         _profile.value = data;
-        await fnSetValueToSpf();
+        await setValueToSpf();
       },
     );
-    await _fnChangeLoading(false);
+    await _changeLoading(false);
   }
 
-  Future fnSetValueToSpf() async {
-    _name.value = _profile.value.data!.fullname;
-    _noHp.value = _profile.value.data!.noHp;
-    _tanggalLahir.value = _profile.value.data!.tglLahir;
-    _gender.value = _profile.value.data!.jenisKelamin;
-    _provinsiName.value = _profile.value.data!.provinsi;
-    _city.value = _profile.value.data!.kota;
-    _pendidikan.value = _profile.value.data!.pendidikanTerakhir;
-    _profesi.value = _profile.value.data!.profession;
+  Future getMyCourse() async {
+    _fnChangeLoadingCourse(true);
+    final response = await _useCase.getMyCourse(_token.value);
+    response.fold(
+      ///IF RESPONSE IS ERROR
+      (fail) => ExceptionHandle.execute(fail),
+
+      ///IF RESPONSE SUCCESS
+      (data) async {
+        _listCourse.value = data;
+      },
+    );
+    await _fnChangeLoadingCourse(false);
+  }
+
+  Future setValueToSpf() async {
+    _name.value = _profile.value.data.fullname;
+    _noHp.value = _profile.value.data.noHp;
+    _tanggalLahir.value = _profile.value.data.tglLahir;
+    _gender.value = _profile.value.data.jenisKelamin;
+    _provinsiName.value = _profile.value.data.provinsi;
+    _city.value = _profile.value.data.kota;
+    _pendidikan.value = _profile.value.data.pendidikanTerakhir;
+    _profesi.value = _profile.value.data.profession;
     await prefs.setString('user_name', _name.value);
     await prefs.setString('user_hp', _noHp.value);
     await prefs.setString('user_birth_date', _tanggalLahir.value);
@@ -186,31 +210,14 @@ class ArkProfileController extends GetxController {
     await prefs.setString('user_profesi', _profesi.value);
   }
 
-  Future fnGetCourse() async {
-    _fnChangeLoading(true);
-    final response = await _useCase.getCourse(_token.value);
-    response.fold(
-      ///IF RESPONSE IS ERROR
-      (fail) => ExceptionHandle.execute(fail),
-
-      ///IF RESPONSE SUCCESS
-      (data) {
-        _jmlKelasSelesai.value =
-            data.where((e) => e.userStatus == '4').toList().length;
-        _listCourse.value = data;
-      },
-    );
-    await _fnChangeLoading(false);
-  }
-
-  Stream<CoinEntity> fnGetCoin() {
+  Stream<CoinEntity> getCoin() {
     return _useCase.getCoin(userId.value).map((event) {
       _coin.value = event;
       return _coin.value;
     });
   }
 
-  void _fnGetFaceRecog() async {
+  void _getFaceRecog() async {
     _isLoadingFaceRecog.value = true;
     final response = await _useCase.getFaceRecog(_tokenWP.value);
     response.fold(
@@ -225,7 +232,7 @@ class ArkProfileController extends GetxController {
     _isLoadingFaceRecog.value = false;
   }
 
-  void fnConfirmLogout() {
+  void confirmLogout() {
     log("LOGOUT FROM ARK");
     AppDialog.dialogWithQuestion(
       'Keluar',
@@ -254,7 +261,7 @@ class ArkProfileController extends GetxController {
     }
   }
 
-  void fnResetPassword() async {
+  void resetPassword() async {
     log('RESET PASSWORD');
     final response = await _useCase.resetPassword(_email.value, _token.value);
     response.fold(

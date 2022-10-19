@@ -1,26 +1,16 @@
-import 'package:ark_module_profile/src/domain/entities/city_entity.dart';
-import 'package:ark_module_profile/src/domain/entities/coin_entity.dart';
-import 'package:ark_module_profile/src/domain/entities/course_entity.dart';
-import 'package:ark_module_profile/src/domain/entities/face_recog_entity.dart';
-import 'package:ark_module_profile/src/domain/entities/profile_entity.dart';
-import 'package:ark_module_profile/src/domain/entities/provinsi_entity.dart';
-import 'package:ark_module_profile/src/domain/entities/sertifikat_entitiy.dart';
-import 'package:ark_module_profile/src/domain/repositories/profile_repository.dart';
+import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:dartz/dartz.dart';
 
-class ProfileUseCase {
-  final ProfileRepository repository;
+class ArkProfileUseCase {
+  final ArkProfileRepository repository;
 
-  ProfileUseCase(this.repository);
+  ArkProfileUseCase(this.repository);
 
   Stream<CoinEntity> getCoin(String userId) => repository.getCoin(userId);
 
   Future<Either<Failure, ProfileEntity>> getProfile(String token) async =>
       await repository.getProfile(token);
-
-  Future<Either<Failure, List<CourseEntity>>> getCourse(String token) async =>
-      await repository.getCourse(token);
 
   Future<Either<Failure, FaceRecogEntity>> getFaceRecog(String token) async =>
       await repository.getFaceRecog(token);
@@ -50,4 +40,8 @@ class ProfileUseCase {
   Future<Either<Failure, bool>> updateProfilePrakerja(
           String id, Map<String, Map<String, Object>> data) async =>
       await repository.updateProfilePrakerja(id, data);
+
+  Future<Either<Failure, List<MyCourseEntity>>> getMyCourse(
+          String token) async =>
+      await repository.getMyCourse(token);
 }
