@@ -99,6 +99,9 @@ class ArkProfileController extends GetxController {
   final RxList<MyCourseEntity> _listCourse = <MyCourseEntity>[].obs;
   RxList<MyCourseEntity> get listCourse => _listCourse;
 
+  final RxList<MyCourseEntity> _listCourseFinished = <MyCourseEntity>[].obs;
+  RxList<MyCourseEntity> get listCourseFinished => _listCourseFinished;
+
   final Rx<ProfileEntity> _profile = ProfileEntity(
     status: false,
     tab: '',
@@ -186,6 +189,15 @@ class ArkProfileController extends GetxController {
       ///IF RESPONSE SUCCESS
       (data) async {
         _listCourse.value = data;
+        for (int i = 0; i < data.length; i++) {
+          final date = DateTime.fromMicrosecondsSinceEpoch(
+              int.parse(data[i].userExpiry) * 1000000);
+          final expired = date.difference(DateTime.now()).inMicroseconds;
+          if ((data[i].userStatus == "3" || data[i].userStatus == "4") &&
+              expired >= 0) {
+            _listCourseFinished.add(data[i]);
+          }
+        }
       },
     );
     await _fnChangeLoadingCourse(false);

@@ -162,7 +162,7 @@ class ArkProfilePage extends StatelessWidget {
                                   child: Center(
                                     child: Obx(
                                       () => Text(
-                                        '${_pC.listCourse.where((e) => e.userStatus == "3" || e.userStatus == "3").toList().length} kelas selesai',
+                                        '${_pC.listCourseFinished.length} kelas selesai',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
