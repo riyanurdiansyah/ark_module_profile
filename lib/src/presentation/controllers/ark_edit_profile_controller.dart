@@ -1,9 +1,5 @@
 import 'dart:developer';
-
 import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_profile/src/data/dto/provinsi_dto.dart';
-import 'package:ark_module_profile/src/domain/entities/city_entity.dart';
-import 'package:ark_module_profile/src/domain/entities/provinsi_entity.dart';
 import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -11,27 +7,43 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class ArkEditProfileController extends GetxController {
-  final ProfileUseCase _useCase;
-
-  ArkEditProfileController(this._useCase);
+  final ArkProfileUseCase _useCase = ArkProfileUseCase(
+      ArkProfileRepositoryImpl(ArkProfileRemoteDataSourceImpl()));
 
   final _pC = Get.find<ArkProfileController>();
 
   @override
   void onInit() async {
-    await fnGetProfile();
-    await _fnStoreDataToVar();
-    await fnGetProvinsi();
+    await getProfile();
+    await _storeDataToVar();
+    await getProvinsi();
     if (_userProvinsi.value.isNotEmpty) {
-      await fnGetCity();
+      await getCity();
       _newProvinsi.value =
           _provinsi[_provinsi.indexWhere((e) => e.nama == _userProvinsi.value)];
     } else {
       newProvinsi.value = _provinsi[0];
     }
-    await _fnChangeLoading(false);
+    await _changeLoading(false);
     super.onInit();
   }
+
+  @override
+  void onClose() {
+    _tcName.dispose();
+    _tcHp.dispose();
+    _tcProfesiLainnya.dispose();
+    super.onClose();
+  }
+
+  final TextEditingController _tcName = TextEditingController();
+  TextEditingController get tcName => _tcName;
+
+  final TextEditingController _tcHp = TextEditingController();
+  TextEditingController get tcHp => _tcHp;
+
+  final TextEditingController _tcProfesiLainnya = TextEditingController();
+  TextEditingController get tcProfesiLainnya => _tcProfesiLainnya;
 
   final Rx<bool> _isLoading = true.obs;
   Rx<bool> get isLoading => _isLoading;
@@ -39,7 +51,24 @@ class ArkEditProfileController extends GetxController {
   final String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
-  final Rx<ProfileEntity> _profile = ProfileEntity().obs;
+  final Rx<ProfileEntity> _profile = ProfileEntity(
+    status: false,
+    tab: '',
+    data: ProfileDataEntity(
+      fullname: '',
+      location: '',
+      bio: '',
+      facebook: '',
+      twitter: '',
+      profession: '',
+      tglLahir: '',
+      provinsi: '',
+      kota: '',
+      jenisKelamin: '',
+      noHp: '',
+      pendidikanTerakhir: '',
+    ),
+  ).obs;
   Rx<ProfileEntity> get profile => _profile;
 
   final Rx<String> _userProvinsi = ''.obs;
@@ -54,15 +83,6 @@ class ArkEditProfileController extends GetxController {
 
   final Rx<CityEntity> _city = const CityEntity(kotaKabupaten: []).obs;
   Rx<CityEntity> get city => _city;
-
-  final TextEditingController _tcName = TextEditingController();
-  TextEditingController get tcName => _tcName;
-
-  final TextEditingController _tcHp = TextEditingController();
-  TextEditingController get tcHp => _tcHp;
-
-  final TextEditingController _tcProfesiLainnya = TextEditingController();
-  TextEditingController get tcProfesiLainnya => _tcProfesiLainnya;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   GlobalKey<FormState> get formKey => _formKey;
@@ -82,41 +102,40 @@ class ArkEditProfileController extends GetxController {
   final Rx<JenisKelamin> _selectedGender = JenisKelamin.defaultGender.obs;
   Rx<JenisKelamin> get selectedGender => _selectedGender;
 
-  Future _fnStoreDataToVar() async {
-    _userProvinsi.value = _profile.value.data!.provinsi;
-    _tcHp.text = _profile.value.data!.noHp;
-    _tcName.text = _profile.value.data!.fullname;
-    _txtProfesi.value = listProfesi.contains(_profile.value.data!.profession)
-        ? _profile.value.data!.profession
+  Future _storeDataToVar() async {
+    _userProvinsi.value = _profile.value.data.provinsi;
+    _tcHp.text = _profile.value.data.noHp;
+    _tcName.text = _profile.value.data.fullname;
+    _txtProfesi.value = listProfesi.contains(_profile.value.data.profession)
+        ? _profile.value.data.profession
         : listProfesi.last;
 
     _tcProfesiLainnya.text =
-        listProfesi.contains(_profile.value.data!.profession)
+        listProfesi.contains(_profile.value.data.profession)
             ? ''
-            : _profile.value.data!.profession;
-    _txtCity.value = _profile.value.data!.kota;
-    _txtTanggalLahir.value = _profile.value.data!.tglLahir;
-    _txtPendidikan.value = _profile.value.data!.pendidikanTerakhir;
-    if (_profile.value.data!.jenisKelamin == 'L') {
+            : _profile.value.data.profession;
+    _txtCity.value = _profile.value.data.kota;
+    _txtTanggalLahir.value = _profile.value.data.tglLahir;
+    _txtPendidikan.value = _profile.value.data.pendidikanTerakhir;
+    if (_profile.value.data.jenisKelamin == 'L') {
       _selectedGender.value = JenisKelamin.pria;
-    } else if (_profile.value.data!.jenisKelamin == 'P') {
+    } else if (_profile.value.data.jenisKelamin == 'P') {
       _selectedGender.value = JenisKelamin.wanita;
     } else {
       _selectedGender.value = JenisKelamin.defaultGender;
     }
   }
 
-  Future _fnChangeLoading(bool val) async {
+  Future _changeLoading(bool val) async {
     _isLoading.value = val;
   }
 
-  Future fnGetProfile() async {
+  Future getProfile() async {
     final response = await _useCase.getProfile(_pC.token.value);
     response.fold(
       ///IF RESPONSE IS ERROR
       (fail) {
         ExceptionHandle.execute(fail);
-        _profile.value = ProfileEntity.withError(_errorMessage);
       },
 
       ///IF RESPONSE SUCCESS
@@ -126,7 +145,7 @@ class ArkEditProfileController extends GetxController {
     );
   }
 
-  Future fnGetProvinsi() async {
+  Future getProvinsi() async {
     final response = await _useCase.getProvinsi();
     response.fold(
       ///IF RESPONSE IS ERROR
@@ -136,12 +155,12 @@ class ArkEditProfileController extends GetxController {
       (data) {
         _provinsi.value = data.provinsi;
         _provinsi.insert(
-            0, ProvinsiDataDTO(id: -1, nama: 'Silahkan Pilih Provinsi'));
+            0, const ProvinsiDataDTO(id: -1, nama: 'Silahkan Pilih Provinsi'));
       },
     );
   }
 
-  Future fnGetCity() async {
+  Future getCity() async {
     final id = _provinsi[_provinsi.indexWhere((e) =>
             e.nama.toLowerCase().contains(_userProvinsi.value.toLowerCase()))]
         .id;
@@ -157,7 +176,7 @@ class ArkEditProfileController extends GetxController {
     );
   }
 
-  void fnGetNewCity() async {
+  void getNewCity() async {
     final response = await _useCase.getCity(_newProvinsi.value.id);
     response.fold(
       ///IF RESPONSE IS ERROR
@@ -171,11 +190,11 @@ class ArkEditProfileController extends GetxController {
     );
   }
 
-  void fnOnChangedProvinsi(ProvinsiDataEntity? value) {
+  void onChangedProvinsi(ProvinsiDataEntity? value) {
     _newProvinsi.value = value!;
     _txtCity.value = '';
     if (value.nama != 'Silahkan Pilih Provinsi') {
-      fnGetNewCity();
+      getNewCity();
     }
   }
 
@@ -215,13 +234,13 @@ class ArkEditProfileController extends GetxController {
           noHp: _tcHp.text,
           pendidikanTerakhir: _txtPendidikan.value,
         );
-        await fnUpdateProfile(data);
-        fnUpdateProfilePrakerja();
+        updateProfilePrakerja();
+        await updateProfile(data);
       }
     }
   }
 
-  Future fnUpdateProfile(ProfileDataEntity data) async {
+  Future updateProfile(ProfileDataEntity data) async {
     final response = await _useCase.updateProfile(data, _pC.token.value);
     response.fold(
       ///IF RESPONSE IS ERROR
@@ -232,7 +251,7 @@ class ArkEditProfileController extends GetxController {
 
       ///IF RESPONSE SUCCESS
       (data) async {
-        await _pC.fnGetProfile();
+        await _pC.getProfile();
         if (isCompletedForm) {
           log('FORM UPDATE PROFILE LENGKAP');
           await fnUpdateCoin();
@@ -252,7 +271,7 @@ class ArkEditProfileController extends GetxController {
     );
   }
 
-  void fnUpdateProfilePrakerja() async {
+  void updateProfilePrakerja() async {
     final jk = _selectedGender.value == JenisKelamin.pria
         ? "L"
         : _selectedGender.value == JenisKelamin.wanita
@@ -284,11 +303,7 @@ class ArkEditProfileController extends GetxController {
     final genderPrakerjaJson = {
       "field": {
         "id": 95,
-        "value": _selectedGender.value == JenisKelamin.pria
-            ? "L"
-            : _selectedGender.value == JenisKelamin.wanita
-                ? "P"
-                : "",
+        "value": jk,
       }
     };
 
@@ -323,49 +338,38 @@ class ArkEditProfileController extends GetxController {
       }
     };
 
-    List<Map<String, Map<String, Object>>> listJson = [
-      nameJson,
-      hpJson,
-      birthDateJson,
-      genderPrakerjaJson,
-      provinceJson,
-      cityJson,
-      degreeJson,
-      profesiJson,
-    ];
-
-    if (_tcName.text != _profile.value.data!.fullname) {
+    if (_tcName.text != _profile.value.data.fullname) {
       await _useCase.updateProfilePrakerja(_pC.tokenPrakerja.value, nameJson);
     }
 
-    if (_tcHp.text != _profile.value.data!.noHp) {
+    if (_tcHp.text != _profile.value.data.noHp) {
       await _useCase.updateProfilePrakerja(_pC.tokenPrakerja.value, hpJson);
     }
 
-    if (_txtPendidikan.value != _profile.value.data!.pendidikanTerakhir) {
+    if (_txtPendidikan.value != _profile.value.data.pendidikanTerakhir) {
       await _useCase.updateProfilePrakerja(_pC.tokenPrakerja.value, degreeJson);
     }
 
-    if (_txtCity.value != _profile.value.data!.kota) {
+    if (_txtCity.value != _profile.value.data.kota) {
       await _useCase.updateProfilePrakerja(_pC.tokenPrakerja.value, cityJson);
     }
 
-    if (_newProvinsi.value.nama != _profile.value.data!.provinsi) {
+    if (_newProvinsi.value.nama != _profile.value.data.provinsi) {
       await _useCase.updateProfilePrakerja(
           _pC.tokenPrakerja.value, provinceJson);
     }
 
-    if (_txtTanggalLahir.value != _profile.value.data!.tglLahir) {
+    if (_txtTanggalLahir.value != _profile.value.data.tglLahir) {
       await _useCase.updateProfilePrakerja(
           _pC.tokenPrakerja.value, birthDateJson);
     }
 
-    if (jk != _profile.value.data!.jenisKelamin) {
+    if (jk != _profile.value.data.jenisKelamin) {
       await _useCase.updateProfilePrakerja(
           _pC.tokenPrakerja.value, genderPrakerjaJson);
     }
 
-    if (_txtProfesi.value != _profile.value.data!.profession) {
+    if (_txtProfesi.value != _profile.value.data.profession) {
       await _useCase.updateProfilePrakerja(
           _pC.tokenPrakerja.value, profesiJson);
     }
@@ -391,7 +395,7 @@ class ArkEditProfileController extends GetxController {
       final data = {
         "coins": coinUpdate,
         "isCompleted": true,
-        "updatedAt": Timestamp.fromDate(DateTime.now()),
+        "updatedAt": Timestamp.now(),
       };
 
       final response = await _useCase.updateCoin(_pC.userId.value, data);

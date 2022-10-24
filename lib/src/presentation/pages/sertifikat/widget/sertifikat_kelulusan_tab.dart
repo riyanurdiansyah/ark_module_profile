@@ -1,12 +1,7 @@
-import 'package:ark_module_profile/src/presentation/controllers/ark_sertifikat_controller.dart';
+import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'error_image_with_text_widget.dart';
-import 'sertifikat_card.dart';
-import 'sertifikat_card_shimmer.dart';
-import 'sertifikat_empty_widget.dart';
 
 class SertifikatKelulusanTab extends StatelessWidget {
   SertifikatKelulusanTab({Key? key}) : super(key: key);

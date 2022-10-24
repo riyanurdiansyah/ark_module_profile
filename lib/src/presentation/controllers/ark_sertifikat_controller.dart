@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'dart:ui';
 import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
@@ -15,11 +16,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ArkSertifikatController extends GetxController {
-  final ProfileUseCase _useCase;
-
-  ArkSertifikatController(this._useCase);
+  final ArkProfileUseCase _useCase = ArkProfileUseCase(
+      ArkProfileRepositoryImpl(ArkProfileRemoteDataSourceImpl()));
 
   late SharedPreferences prefs;
+
+  RxList<bool> listExpanded = <bool>[].obs;
+
+  late ExpandableController expandableController;
 
   @override
   void onInit() async {
@@ -34,6 +38,7 @@ class ArkSertifikatController extends GetxController {
   void onClose() {
     IsolateNameServer.removePortNameMapping('downloader_cert');
     _port.close();
+    _txSearch.dispose();
     super.onClose();
   }
 
@@ -87,8 +92,12 @@ class ArkSertifikatController extends GetxController {
   String get userId => _userId;
 
   Future _fnSetup() async {
+    expandableController = ExpandableController();
     prefs = await SharedPreferences.getInstance();
     _userId = prefs.getString('user_id')!;
+    expandableController.addListener(() {
+      log("CEK EXPANDED");
+    });
   }
 
   ///LISTEN PORT IF HAVE A DOWNLOAD ACTION

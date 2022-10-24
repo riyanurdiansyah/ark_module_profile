@@ -10,7 +10,7 @@ class SertifikatPenyelesaianTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 14,
       ),

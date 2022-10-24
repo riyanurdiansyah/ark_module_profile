@@ -12,9 +12,8 @@ class ArkProfilePage extends StatelessWidget {
     // required this.onTapLogout,
   }) : super(key: key);
 
-  // final VoidCallback onTapLogout;
-
   final _pC = Get.find<ArkProfileController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,7 +162,7 @@ class ArkProfilePage extends StatelessWidget {
                                   child: Center(
                                     child: Obx(
                                       () => Text(
-                                        '${_pC.jmlKelasSelesai} kelas selesai',
+                                        '${_pC.listCourseFinished.length} kelas selesai',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -318,7 +317,7 @@ class ArkProfilePage extends StatelessWidget {
             () {
               if (_pC.isLogin.value) {
                 return StreamBuilder<CoinEntity>(
-                  stream: _pC.fnGetCoin(),
+                  stream: _pC.getCoin(),
                   builder: (_, snapshot) {
                     if (snapshot.hasData) {
                       return Padding(
@@ -681,7 +680,7 @@ class ArkProfilePage extends StatelessWidget {
                         height: 12,
                       ),
                       GestureDetector(
-                        onTap: () => _pC.fnResetPassword(),
+                        onTap: () => _pC.resetPassword(),
                         child: SizedBox(
                           height: 25,
                           child: Row(
@@ -717,7 +716,7 @@ class ArkProfilePage extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                   color: Colors.white,
                   child: GestureDetector(
-                    onTap: () => _pC.fnConfirmLogout(),
+                    onTap: () => _pC.confirmLogout(),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

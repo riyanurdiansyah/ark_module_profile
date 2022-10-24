@@ -1,5 +1,4 @@
 import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_profile/src/domain/entities/provinsi_entity.dart';
 import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -464,7 +463,7 @@ class ArkEditProfilePage extends StatelessWidget {
                                             );
                                           }).toList(),
                                           onChanged: (value) =>
-                                              _epC.fnOnChangedProvinsi(value),
+                                              _epC.onChangedProvinsi(value),
                                         ),
                                       ),
                                     ),
