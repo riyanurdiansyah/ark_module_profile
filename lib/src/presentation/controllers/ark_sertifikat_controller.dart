@@ -94,7 +94,7 @@ class ArkSertifikatController extends GetxController {
   Future _fnSetup() async {
     expandableController = ExpandableController();
     prefs = await SharedPreferences.getInstance();
-    _userId = prefs.getString('user_id')!;
+    _userId = prefs.getString('user_id') ?? "";
     expandableController.addListener(() {
       log("CEK EXPANDED");
     });
