@@ -144,6 +144,7 @@ class ArkProfileController extends GetxController {
     _isLoadingCourse.value = val;
   }
 
+  ///UNTUK MENSETUP SEMUA YG DIBUTUHIN DI CONTROLLER
   Future _setup() async {
     prefs = await SharedPreferences.getInstance();
     _isLogin.value = prefs.getBool('user_login') ?? false;
@@ -163,6 +164,7 @@ class ArkProfileController extends GetxController {
     _city.value = prefs.getString('user_city') ?? '';
   }
 
+  ///MENGAMBIL DATA PROFILE
   Future getProfile() async {
     _changeLoading(true);
     final response = await _useCase.getProfile(_token.value);
@@ -179,6 +181,7 @@ class ArkProfileController extends GetxController {
     await _changeLoading(false);
   }
 
+  ///MENGAMBIL DATA MY COURSE
   Future getMyCourse() async {
     _fnChangeLoadingCourse(true);
     final response = await _useCase.getMyCourse(_token.value);
@@ -203,6 +206,7 @@ class ArkProfileController extends GetxController {
     await _fnChangeLoadingCourse(false);
   }
 
+  ///SET ALL VALUE TO SHARED PREFERENCES
   Future setValueToSpf() async {
     _name.value = _profile.value.data.fullname;
     _noHp.value = _profile.value.data.noHp;
@@ -222,6 +226,7 @@ class ArkProfileController extends GetxController {
     await prefs.setString('user_profesi', _profesi.value);
   }
 
+  ///STREAM COIN FROM FIRESTORE
   Stream<CoinEntity> getCoin() {
     return _useCase.getCoin(userId.value).map((event) {
       _coin.value = event;
@@ -229,6 +234,7 @@ class ArkProfileController extends GetxController {
     });
   }
 
+  ///MENGAMBIL DATA FACE RECOG
   void _getFaceRecog() async {
     _isLoadingFaceRecog.value = true;
     final response = await _useCase.getFaceRecog(_tokenWP.value);
@@ -244,6 +250,7 @@ class ArkProfileController extends GetxController {
     _isLoadingFaceRecog.value = false;
   }
 
+  ///MENAMPILKAN DIALOG LOGOUT
   void confirmLogout() {
     log("LOGOUT FROM ARK");
     AppDialog.dialogWithQuestion(
@@ -261,20 +268,15 @@ class ArkProfileController extends GetxController {
           ? await _googleSignIn.signOut()
           : await _googleSignInIos.signOut();
       await FacebookAuth.instance.logOut();
-      // await deleteFCMToken();
       await prefs.clear();
-      //close dialog
       Get.back();
       Get.offAllNamed(AppRouteName.main);
     } catch (e) {
-      // errorAuthDialog(e.toString());
-      // Future.delayed(Duration(seconds: 3), () => Get.back());
       log("ERROR LOGOUT : $e");
     }
   }
 
   void resetPassword() async {
-    log('RESET PASSWORD');
     final response = await _useCase.resetPassword(_email.value, _token.value);
     response.fold(
       ///IF RESPONSE IS ERROR

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
@@ -67,7 +69,6 @@ class ArkProfileRemoteDataSourceImpl implements ArkProfileRemoteDataSource {
       code,
       response,
       'Error Get Face Recog... failed connect to server',
-      'Failed Get Face Recog... Please try again',
     );
   }
 
@@ -75,6 +76,8 @@ class ArkProfileRemoteDataSourceImpl implements ArkProfileRemoteDataSource {
   Future<SertifikatDTO> getAllCertificate(String userId) async {
     final response = await dio.get("$listCertificateUrl/$userId");
     int code = response.statusCode ?? 500;
+
+    log("RES SERTIF : ${response.data}");
     if (code == 200) {
       return SertifikatDTO.fromJson(response.data);
     }
@@ -83,7 +86,6 @@ class ArkProfileRemoteDataSourceImpl implements ArkProfileRemoteDataSource {
       code,
       response,
       'Error Get All Certificate... failed connect to server',
-      'Failed Get All Certificate... Please try again',
     );
   }
 
@@ -101,7 +103,6 @@ class ArkProfileRemoteDataSourceImpl implements ArkProfileRemoteDataSource {
       code,
       response,
       'Error Reset Password... failed connect to server',
-      'Failed Reset Password... Please try again',
     );
   }
 
@@ -116,7 +117,6 @@ class ArkProfileRemoteDataSourceImpl implements ArkProfileRemoteDataSource {
       code,
       response,
       'Error Get Provinsi... failed connect to server',
-      'Failed Get Provinsi... Please try again',
     );
   }
 
@@ -131,7 +131,6 @@ class ArkProfileRemoteDataSourceImpl implements ArkProfileRemoteDataSource {
       code,
       response,
       'Error Get Provinsi... failed connect to server',
-      'Failed Get Provinsi... Please try again',
     );
   }
 
@@ -158,7 +157,6 @@ class ArkProfileRemoteDataSourceImpl implements ArkProfileRemoteDataSource {
       code,
       response,
       'Error Update Profile... failed connect to server',
-      'Failed Update Profile... Please try again',
     );
   }
 
@@ -175,17 +173,16 @@ class ArkProfileRemoteDataSourceImpl implements ArkProfileRemoteDataSource {
       code,
       response,
       'Error Update Profile Prakerja... failed connect to server',
-      'Failed Update Profile Prakerja... Please try again',
     );
   }
 
   @override
   Future<List<MyCourseDTO>> getMyCourse(String token) async {
+    List<MyCourseDTO> listCourse = [];
     await dioInterceptor(dio, token);
     final response = await dio.get(myCourseUrl);
     int code = response.statusCode ?? 500;
     if (code == 200) {
-      List<MyCourseDTO> listCourse = [];
       for (var data in response.data) {
         listCourse.add(MyCourseDTO.fromJson(data));
       }
@@ -195,7 +192,6 @@ class ArkProfileRemoteDataSourceImpl implements ArkProfileRemoteDataSource {
       code,
       response,
       'Error Get My Course... failed connect to server',
-      'Failed Get My Course... Please try again',
     );
   }
 }

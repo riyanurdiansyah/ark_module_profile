@@ -616,7 +616,44 @@ class ArkProfilePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                      )
+                      ),
+                      const SizedBox(
+                        height: 9,
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Colors.grey.shade300,
+                      ),
+                      const SizedBox(
+                        height: 9,
+                      ),
+                      GestureDetector(
+                        onTap: () => Get.toNamed(
+                          AppRouteName.historyTransactionPage,
+                        ),
+                        child: SizedBox(
+                          height: 25,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Transaksi Saya',
+                                  style: AppStyleText.styleMontserrat(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 11.5,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 12,
+                                color: Color(0xFFC0C2C6),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
