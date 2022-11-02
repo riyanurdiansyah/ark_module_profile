@@ -18,11 +18,18 @@ class ArkEditProfileController extends GetxController {
     await _storeDataToVar();
     await getProvinsi();
     if (_userProvinsi.value.isNotEmpty) {
-      await getCity();
-      _newProvinsi.value =
-          _provinsi[_provinsi.indexWhere((e) => e.nama == _userProvinsi.value)];
+      final indexProv =
+          _provinsi.indexWhere((e) => e.nama == _userProvinsi.value);
+      if (indexProv >= 0) {
+        await getCity();
+        _newProvinsi.value = _provinsi[
+            _provinsi.indexWhere((e) => e.nama == _userProvinsi.value)];
+      } else {
+        _txtCity.value = '';
+        _newProvinsi.value = _provinsi[0];
+      }
     } else {
-      newProvinsi.value = _provinsi[0];
+      _newProvinsi.value = _provinsi[0];
     }
     await _changeLoading(false);
     super.onInit();
