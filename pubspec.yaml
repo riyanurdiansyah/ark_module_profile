@@ -14,7 +14,7 @@ dependencies:
   ark_module_setup:
     git:
       url: https://github.com/riyanurdiansyah/ark_module_setup.git
-      ref: dev
+      ref: master
 
   cached_network_image: ^3.1.0
   cloud_firestore: 3.1.2
