@@ -1,7 +1,11 @@
-import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_profile/src/presentation/controllers/ark_sertifikat_controller.dart';
+import 'package:ark_module_profile/utils/app_style_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'widget/custom_popup_menu.dart';
+import 'widget/sertifikat_kelulusan_tab.dart';
+import 'widget/sertifikat_penyelesaian_tab.dart';
 
 class ArkSertifikatPage extends StatelessWidget {
   ArkSertifikatPage({Key? key}) : super(key: key);
@@ -12,9 +16,9 @@ class ArkSertifikatPage extends StatelessWidget {
       key: _sC.scaffoldkey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Sertifikat",
-          style: AppStyleText.styleMontserrat(
+          style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14,
             color: Colors.white,
@@ -51,7 +55,7 @@ class ArkSertifikatPage extends StatelessWidget {
                       () => TextField(
                         controller: _sC.txSearch,
                         onChanged: (query) => _sC.fnOnSearchCertificate(query),
-                        style: AppStyleText.styleMontserrat(
+                        style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
                           color: Colors.black,
@@ -98,10 +102,10 @@ class ArkSertifikatPage extends StatelessWidget {
                           Obx(
                             () => Text(
                               _sC.txtUrutkan.value,
-                              style: AppStyleText.styleMontserrat(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 11,
-                                color: const Color(0xFF333539),
+                                color: Color(0xFF333539),
                               ),
                             ),
                           ),
@@ -115,9 +119,9 @@ class ArkSertifikatPage extends StatelessWidget {
                     listMenu: <PopupMenuItem>[
                       PopupMenuItem(
                         onTap: () => _sC.fnSortCertificate('Terbaru'),
-                        child: Text(
+                        child: const Text(
                           'Terbaru',
-                          style: AppStyleText.styleMontserrat(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: Colors.black54,
@@ -126,9 +130,9 @@ class ArkSertifikatPage extends StatelessWidget {
                       ),
                       PopupMenuItem(
                         onTap: () => _sC.fnSortCertificate('A - Z'),
-                        child: Text(
+                        child: const Text(
                           'A - Z',
-                          style: AppStyleText.styleMontserrat(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: Colors.black54,
@@ -137,9 +141,9 @@ class ArkSertifikatPage extends StatelessWidget {
                       ),
                       PopupMenuItem(
                         onTap: () => _sC.fnSortCertificate('Z - A'),
-                        child: Text(
+                        child: const Text(
                           'Z - A',
-                          style: AppStyleText.styleMontserrat(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: Colors.black54,
@@ -181,7 +185,7 @@ class ArkSertifikatPage extends StatelessWidget {
                             )),
                         child: Text(
                           'Sertifikat Penyelesaian',
-                          style: AppStyleText.styleMontserrat(
+                          style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                             color: _sC.indexTabSertif.value == 0
@@ -219,7 +223,7 @@ class ArkSertifikatPage extends StatelessWidget {
                           fit: BoxFit.contain,
                           child: Text(
                             'Sertifikat Kompetensi Kelulusan',
-                            style: AppStyleText.styleMontserrat(
+                            style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
                               color: _sC.indexTabSertif.value == 1

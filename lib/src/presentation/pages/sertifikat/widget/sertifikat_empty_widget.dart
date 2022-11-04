@@ -1,4 +1,3 @@
-import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,9 +19,9 @@ class SertifikatEmptyWidget extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          Text(
+          const Text(
             'Sertifikat tidak ditemukan',
-            style: AppStyleText.styleMontserrat(
+            style: TextStyle(
               fontSize: 14,
               color: Colors.grey,
               fontWeight: FontWeight.w600,

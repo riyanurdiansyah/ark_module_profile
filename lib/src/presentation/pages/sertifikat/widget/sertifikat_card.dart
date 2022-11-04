@@ -1,5 +1,7 @@
 import 'dart:developer';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_profile/src/domain/entities/sertifikat_entity.dart';
+import 'package:ark_module_profile/utils/app_constanta.dart';
+import 'package:ark_module_profile/utils/app_route_name.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +68,7 @@ class SertifikatCard extends StatelessWidget {
           child: Text(
             parseHtmlString(sertif.courseName),
             textAlign: TextAlign.center,
-            style: AppStyleText.styleMontserrat(
+            style: const TextStyle(
               fontSize: 12,
               height: 1.5,
               color: Colors.black,
@@ -80,7 +82,8 @@ class SertifikatCard extends StatelessWidget {
         Text(
           sertif.certificateDate,
           textAlign: TextAlign.center,
-          style: AppStyleText.styleSourceSansPro(
+          style: const TextStyle(
+            fontFamily: 'SourceSansPro',
             fontSize: 10.5,
             color: Colors.black,
             fontWeight: FontWeight.w400,
@@ -118,9 +121,9 @@ class SertifikatCard extends StatelessWidget {
                   const SizedBox(
                     height: 25,
                   ),
-                  Text(
+                  const Text(
                     'Instruksi',
-                    style: AppStyleText.styleMontserrat(
+                    style: TextStyle(
                       fontWeight: FontWeight.w800,
                       color: Colors.black,
                       fontSize: 14,
@@ -129,9 +132,10 @@ class SertifikatCard extends StatelessWidget {
                   const SizedBox(
                     height: 6,
                   ),
-                  Text(
+                  const Text(
                     'Masukkan data-data di bawah ini ke LinkedIn melalui tombol',
-                    style: AppStyleText.styleSourceSansPro(
+                    style: TextStyle(
+                      fontFamily: 'SourceSansPro',
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
                       fontSize: 12.5,
@@ -140,9 +144,10 @@ class SertifikatCard extends StatelessWidget {
                   const SizedBox(
                     height: 6,
                   ),
-                  Text(
+                  const Text(
                     '\'Taruh di Profile LinkedIn\'',
-                    style: AppStyleText.styleSourceSansPro(
+                    style: TextStyle(
+                      fontFamily: 'SourceSansPro',
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
                       fontSize: 12.5,
@@ -189,9 +194,9 @@ class SertifikatCard extends StatelessWidget {
                                     const SizedBox(
                                       width: 8,
                                     ),
-                                    Text(
+                                    const Text(
                                       'Taruh di Profile LinkedIn',
-                                      style: AppStyleText.styleMontserrat(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: Colors.white,
                                         fontSize: 12,
@@ -204,12 +209,13 @@ class SertifikatCard extends StatelessWidget {
                             const SizedBox(
                               height: 6,
                             ),
-                            Text(
+                            const Text(
                               '*Pastikan kamu memiliki aplikasi LinkedIn untuk menggunakan fitur ini',
-                              style: AppStyleText.styleSourceSansPro(
+                              style: TextStyle(
+                                fontFamily: 'SourceSansPro',
                                 fontWeight: FontWeight.w400,
                                 fontSize: 8,
-                                color: const Color(0xFF838589),
+                                color: Color(0xFF838589),
                               ),
                             )
                           ],
@@ -221,24 +227,26 @@ class SertifikatCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Expanded(
+                            const Expanded(
                               flex: 3,
                               child: Text(
                                 'Name',
-                                style: AppStyleText.styleSourceSansPro(
+                                style: TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 13,
                                   height: 1.4,
-                                  color: const Color(0xFF333539),
+                                  color: Color(0xFF333539),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                            Text(
+                            const Text(
                               ":  ",
-                              style: AppStyleText.styleSourceSansPro(
+                              style: TextStyle(
+                                fontFamily: 'SourceSansPro',
                                 height: 1.4,
                                 fontSize: 13,
-                                color: const Color(0xFF333539),
+                                color: Color(0xFF333539),
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -246,10 +254,11 @@ class SertifikatCard extends StatelessWidget {
                               flex: 4,
                               child: Text(
                                 parseHtmlString(sertif.courseName),
-                                style: AppStyleText.styleSourceSansPro(
+                                style: const TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   height: 1.4,
                                   fontSize: 13,
-                                  color: const Color(0xFF333539),
+                                  color: Color(0xFF333539),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -261,22 +270,24 @@ class SertifikatCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Expanded(
+                            const Expanded(
                               flex: 3,
                               child: Text(
                                 'Issuing Organization',
-                                style: AppStyleText.styleSourceSansPro(
+                                style: TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 13,
-                                  color: const Color(0xFF333539),
+                                  color: Color(0xFF333539),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                            Text(
+                            const Text(
                               ":  ",
-                              style: AppStyleText.styleSourceSansPro(
+                              style: TextStyle(
+                                fontFamily: 'SourceSansPro',
                                 fontSize: 13,
-                                color: const Color(0xFF333539),
+                                color: Color(0xFF333539),
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -284,9 +295,10 @@ class SertifikatCard extends StatelessWidget {
                               flex: 4,
                               child: Text(
                                 sertif.issuingOrganization,
-                                style: AppStyleText.styleSourceSansPro(
+                                style: const TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 13,
-                                  color: const Color(0xFF333539),
+                                  color: Color(0xFF333539),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -298,22 +310,24 @@ class SertifikatCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Expanded(
+                            const Expanded(
                               flex: 3,
                               child: Text(
                                 'Issue Date',
-                                style: AppStyleText.styleSourceSansPro(
+                                style: TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 13,
-                                  color: const Color(0xFF333539),
+                                  color: Color(0xFF333539),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                            Text(
+                            const Text(
                               ":  ",
-                              style: AppStyleText.styleSourceSansPro(
+                              style: TextStyle(
+                                fontFamily: 'SourceSansPro',
                                 fontSize: 13,
-                                color: const Color(0xFF333539),
+                                color: Color(0xFF333539),
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -321,9 +335,10 @@ class SertifikatCard extends StatelessWidget {
                               flex: 4,
                               child: Text(
                                 sertif.issueDate,
-                                style: AppStyleText.styleSourceSansPro(
+                                style: const TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 13,
-                                  color: const Color(0xFF333539),
+                                  color: Color(0xFF333539),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -335,22 +350,24 @@ class SertifikatCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Expanded(
+                            const Expanded(
                               flex: 3,
                               child: Text(
                                 'Credential ID',
-                                style: AppStyleText.styleSourceSansPro(
+                                style: TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 13,
-                                  color: const Color(0xFF333539),
+                                  color: Color(0xFF333539),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                            Text(
+                            const Text(
                               ":  ",
-                              style: AppStyleText.styleSourceSansPro(
+                              style: TextStyle(
+                                fontFamily: 'SourceSansPro',
                                 fontSize: 13,
-                                color: const Color(0xFF333539),
+                                color: Color(0xFF333539),
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -358,9 +375,10 @@ class SertifikatCard extends StatelessWidget {
                               flex: 4,
                               child: Text(
                                 sertif.credentialId,
-                                style: AppStyleText.styleSourceSansPro(
+                                style: const TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 13,
-                                  color: const Color(0xFF333539),
+                                  color: Color(0xFF333539),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -372,22 +390,24 @@ class SertifikatCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Expanded(
+                            const Expanded(
                               flex: 3,
                               child: Text(
                                 'Credential URL',
-                                style: AppStyleText.styleSourceSansPro(
+                                style: TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 13,
-                                  color: const Color(0xFF333539),
+                                  color: Color(0xFF333539),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                            Text(
+                            const Text(
                               ":  ",
-                              style: AppStyleText.styleSourceSansPro(
+                              style: TextStyle(
+                                fontFamily: 'SourceSansPro',
                                 fontSize: 13,
-                                color: const Color(0xFF333539),
+                                color: Color(0xFF333539),
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -397,9 +417,10 @@ class SertifikatCard extends StatelessWidget {
                                 sertif.credentialUrl,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: AppStyleText.styleSourceSansPro(
+                                style: const TextStyle(
+                                  fontFamily: 'SourceSansPro',
                                   fontSize: 13,
-                                  color: const Color(0xFF333539),
+                                  color: Color(0xFF333539),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -440,9 +461,9 @@ class SertifikatCard extends StatelessWidget {
                             const SizedBox(
                               width: 5,
                             ),
-                            Text(
+                            const Text(
                               "Tambahkan ke LinkedIn",
-                              style: AppStyleText.styleMontserrat(
+                              style: TextStyle(
                                 fontSize: 11,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -482,20 +503,20 @@ class SertifikatCard extends StatelessWidget {
                             downloadProgress[index] == 100 ||
                             downloadProgress[index] == -1) {
                           return Row(
-                            children: [
-                              const Icon(
+                            children: const [
+                              Icon(
                                 Icons.download_rounded,
                                 color: Color(0xFF0977BE),
                                 size: 10,
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 4,
                               ),
                               Text(
                                 'Unduh',
-                                style: AppStyleText.styleMontserrat(
+                                style: TextStyle(
                                   fontSize: 9,
-                                  color: const Color(0xFF0977BE),
+                                  color: Color(0xFF0977BE),
                                   fontWeight: FontWeight.w700,
                                 ),
                               )
@@ -504,9 +525,9 @@ class SertifikatCard extends StatelessWidget {
                         } else {
                           return Text(
                             'Progress ${downloadProgress[index]}%',
-                            style: AppStyleText.styleMontserrat(
+                            style: const TextStyle(
                               fontSize: 9,
-                              color: const Color(0xFF0977BE),
+                              color: Color(0xFF0977BE),
                               fontWeight: FontWeight.w700,
                             ),
                           );
@@ -531,20 +552,20 @@ class SertifikatCard extends StatelessWidget {
                         ),
                       ),
                       child: Row(
-                        children: [
-                          const Icon(
+                        children: const [
+                          Icon(
                             Icons.share_rounded,
                             color: Color(0xFF0977BE),
                             size: 12,
                           ),
-                          const SizedBox(
+                          SizedBox(
                             width: 6,
                           ),
                           Text(
                             'Bagikan',
-                            style: AppStyleText.styleMontserrat(
+                            style: TextStyle(
                               fontSize: 9,
-                              color: const Color(0xFF0977BE),
+                              color: Color(0xFF0977BE),
                               fontWeight: FontWeight.w700,
                             ),
                           )

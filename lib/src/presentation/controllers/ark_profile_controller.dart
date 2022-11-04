@@ -1,6 +1,15 @@
 import 'dart:developer';
-import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_profile/src/core/exception_handling.dart';
+import 'package:ark_module_profile/src/data/datasources/ark_profile_remote_datasource_impl.dart';
+import 'package:ark_module_profile/src/data/repositories/ark_profile_repository_impl.dart';
+import 'package:ark_module_profile/src/domain/entities/coin_entity.dart';
+import 'package:ark_module_profile/src/domain/entities/face_recog_entity.dart';
+import 'package:ark_module_profile/src/domain/entities/my_course_entity.dart';
+import 'package:ark_module_profile/src/domain/entities/profile_entity.dart';
+import 'package:ark_module_profile/src/domain/usecases/ark_profile_usecase.dart';
+import 'package:ark_module_profile/utils/app_dialog.dart';
+import 'package:ark_module_profile/utils/app_route_name.dart';
+import 'package:ark_module_profile/utils/app_url.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';

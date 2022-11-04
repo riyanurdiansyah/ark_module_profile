@@ -1,4 +1,3 @@
-import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:flutter/material.dart';
 
 class ErrorImageWithTextWidget extends StatelessWidget {
@@ -29,7 +28,7 @@ class ErrorImageWithTextWidget extends StatelessWidget {
         ),
         Text(
           errorMsg,
-          style: AppStyleText.styleMontserrat(
+          style: TextStyle(
             fontSize: 12,
             color: Colors.grey.shade500,
             fontWeight: FontWeight.w600,
@@ -43,9 +42,9 @@ class ErrorImageWithTextWidget extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             primary: Colors.blue,
           ),
-          child: Text(
+          child: const Text(
             'Refresh',
-            style: AppStyleText.styleMontserrat(
+            style: TextStyle(
               fontSize: 14,
               color: Colors.white,
               fontWeight: FontWeight.w600,

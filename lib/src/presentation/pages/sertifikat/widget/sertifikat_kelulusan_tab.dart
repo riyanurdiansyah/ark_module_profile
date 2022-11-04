@@ -1,5 +1,9 @@
-import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_profile/services/firebase_analytics.dart';
+import 'package:ark_module_profile/src/presentation/controllers/ark_sertifikat_controller.dart';
+import 'package:ark_module_profile/src/presentation/pages/sertifikat/widget/error_image_with_text_widget.dart';
+import 'package:ark_module_profile/src/presentation/pages/sertifikat/widget/sertifikat_card.dart';
+import 'package:ark_module_profile/src/presentation/pages/sertifikat/widget/sertifikat_card_shimmer.dart';
+import 'package:ark_module_profile/src/presentation/pages/sertifikat/widget/sertifikat_empty_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,9 +40,9 @@ class SertifikatKelulusanTab extends StatelessWidget {
                     ],
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'i',
-                  style: AppStyleText.styleMontserrat(
+                  style: TextStyle(
                     color: Colors.white,
                     fontSize: 9,
                     fontWeight: FontWeight.bold,
@@ -51,9 +55,10 @@ class SertifikatKelulusanTab extends StatelessWidget {
               Flexible(
                 child: RichText(
                   textAlign: TextAlign.left,
-                  text: TextSpan(
+                  text: const TextSpan(
                     text: 'Sertifikat Kompentensi Kelulusan ',
-                    style: AppStyleText.styleSourceSansPro(
+                    style: TextStyle(
+                      fontFamily: 'SourceSansPro',
                       fontSize: 13,
                       fontStyle: FontStyle.italic,
                       color: Colors.black,
@@ -63,7 +68,8 @@ class SertifikatKelulusanTab extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: "akan anda dapatkan setelah ",
-                        style: AppStyleText.styleSourceSansPro(
+                        style: TextStyle(
+                          fontFamily: 'SourceSansPro',
                           fontSize: 13,
                           fontStyle: FontStyle.italic,
                           color: Colors.black,
@@ -73,7 +79,8 @@ class SertifikatKelulusanTab extends StatelessWidget {
                       ),
                       TextSpan(
                         text: 'dinyatakan lulus dari ujian akhir. ',
-                        style: AppStyleText.styleSourceSansPro(
+                        style: TextStyle(
+                          fontFamily: 'SourceSansPro',
                           fontSize: 13,
                           fontStyle: FontStyle.italic,
                           color: Colors.black,

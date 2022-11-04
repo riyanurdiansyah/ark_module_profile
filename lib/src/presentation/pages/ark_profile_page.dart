@@ -1,5 +1,8 @@
-import 'package:ark_module_profile/ark_module_profile.dart';
-import 'package:ark_module_setup/ark_module_setup.dart';
+import 'package:ark_module_profile/src/domain/entities/coin_entity.dart';
+import 'package:ark_module_profile/src/presentation/controllers/ark_profile_controller.dart';
+import 'package:ark_module_profile/utils/app_color.dart';
+import 'package:ark_module_profile/utils/app_constanta.dart';
+import 'package:ark_module_profile/utils/app_route_name.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,9 +23,9 @@ class ArkProfilePage extends StatelessWidget {
       backgroundColor: const Color(0xFFF3F4F5),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
+        title: const Text(
           'Profile',
-          style: AppStyleText.styleMontserrat(
+          style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14,
             color: Colors.white,
@@ -218,12 +221,12 @@ class ArkProfilePage extends StatelessWidget {
                                         side: const BorderSide(
                                       color: kPrimaryColor,
                                     )),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16),
+                                    child: const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 16),
                                       child: Text(
                                         'Login',
-                                        style: AppStyleText.styleMontserrat(
+                                        style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                             color: kPrimaryColor),
@@ -238,12 +241,12 @@ class ArkProfilePage extends StatelessWidget {
                                         side: const BorderSide(
                                       color: kPrimaryColor,
                                     )),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16),
+                                    child: const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 16),
                                       child: Text(
                                         'Daftar',
-                                        style: AppStyleText.styleMontserrat(
+                                        style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                             color: kPrimaryColor),
@@ -268,9 +271,9 @@ class ArkProfilePage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Akun Saya',
-                              style: AppStyleText.styleMontserrat(
+                              style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
@@ -282,18 +285,18 @@ class ArkProfilePage extends StatelessWidget {
                             SizedBox(
                               height: 25,
                               child: Row(
-                                children: [
+                                children: const [
                                   Expanded(
                                     child: Text(
                                       'Sertifikat Saya',
-                                      style: AppStyleText.styleMontserrat(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 11.5,
                                         color: Colors.black,
                                       ),
                                     ),
                                   ),
-                                  const Icon(
+                                  Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 12,
                                     color: Color(0xFFC0C2C6),
@@ -356,10 +359,10 @@ class ArkProfilePage extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
+                                                const Text(
                                                   'Arkademi Koin',
-                                                  style: AppStyleText
-                                                      .styleSourceSansPro(
+                                                  style: TextStyle(
+                                                    fontFamily: 'SourceSansPro',
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 10,
                                                     color: Colors.grey,
@@ -369,8 +372,7 @@ class ArkProfilePage extends StatelessWidget {
                                                   fit: BoxFit.contain,
                                                   child: Text(
                                                     '${numberFormat.format(snapshot.data?.coins ?? 0)} Koin',
-                                                    style: AppStyleText
-                                                        .styleMontserrat(
+                                                    style: TextStyle(
                                                       color: Colors.black,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -415,11 +417,11 @@ class ArkProfilePage extends StatelessWidget {
                                                 MainAxisAlignment.center,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
+                                            children: const [
                                               Text(
                                                 'Arkademi Wallet',
-                                                style: AppStyleText
-                                                    .styleSourceSansPro(
+                                                style: TextStyle(
+                                                  fontFamily: 'SourceSansPro',
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 10,
                                                   color: Colors.grey,
@@ -427,8 +429,7 @@ class ArkProfilePage extends StatelessWidget {
                                               ),
                                               Text(
                                                 "Coming Soon",
-                                                style: AppStyleText
-                                                    .styleMontserrat(
+                                                style: TextStyle(
                                                   fontSize: 11,
                                                   fontStyle: FontStyle.italic,
                                                   fontWeight: FontWeight.w500,
@@ -470,9 +471,9 @@ class ArkProfilePage extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
+                                          const Text(
                                             'Lengkapi Informasi Akun Anda',
-                                            style: AppStyleText.styleMontserrat(
+                                            style: TextStyle(
                                               fontSize: 10,
                                               color: Colors.black,
                                             ),
@@ -489,8 +490,8 @@ class ArkProfilePage extends StatelessWidget {
                                               RichText(
                                                 text: TextSpan(
                                                   text: "Dapatkan",
-                                                  style: AppStyleText
-                                                      .styleSourceSansPro(
+                                                  style: const TextStyle(
+                                                    fontFamily: 'SourceSansPro',
                                                     fontSize: 10,
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.w400,
@@ -501,8 +502,7 @@ class ArkProfilePage extends StatelessWidget {
                                                               .data!.isOldUser
                                                           ? "  10.000 koin"
                                                           : "  5.000 koin",
-                                                      style: AppStyleText
-                                                          .styleMontserrat(
+                                                      style: const TextStyle(
                                                         fontSize: 10,
                                                         color: Colors.black,
                                                         fontWeight:
@@ -528,9 +528,9 @@ class ArkProfilePage extends StatelessWidget {
                                         ),
                                         onPressed: () => Get.toNamed(
                                             AppRouteName.editProfile),
-                                        child: Text(
+                                        child: const Text(
                                           'Lengkapi',
-                                          style: AppStyleText.styleMontserrat(
+                                          style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
@@ -578,9 +578,9 @@ class ArkProfilePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Akun Saya',
-                        style: AppStyleText.styleMontserrat(
+                        style: TextStyle(
                           fontSize: 14,
                           color: Colors.black,
                           fontWeight: FontWeight.w800,
@@ -597,18 +597,18 @@ class ArkProfilePage extends StatelessWidget {
                         child: SizedBox(
                           height: 25,
                           child: Row(
-                            children: [
+                            children: const [
                               Expanded(
                                 child: Text(
                                   'Sertifikat Saya',
-                                  style: AppStyleText.styleMontserrat(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 11.5,
                                     color: Colors.black,
                                   ),
                                 ),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 size: 12,
                                 color: Color(0xFFC0C2C6),
@@ -634,18 +634,18 @@ class ArkProfilePage extends StatelessWidget {
                         child: SizedBox(
                           height: 25,
                           child: Row(
-                            children: [
+                            children: const [
                               Expanded(
                                 child: Text(
                                   'Transaksi Saya',
-                                  style: AppStyleText.styleMontserrat(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 11.5,
                                     color: Colors.black,
                                   ),
                                 ),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 size: 12,
                                 color: Color(0xFFC0C2C6),
@@ -669,9 +669,9 @@ class ArkProfilePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Pengaturan Akun",
-                        style: AppStyleText.styleMontserrat(
+                        style: TextStyle(
                           fontWeight: FontWeight.w800,
                           fontSize: 14,
                           color: Colors.black,
@@ -686,18 +686,18 @@ class ArkProfilePage extends StatelessWidget {
                           height: 25,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                            children: const [
                               Expanded(
                                 child: Text(
                                   "Ubah Data Face Recognition",
-                                  style: AppStyleText.styleMontserrat(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 11.5,
                                     color: Colors.black,
                                   ),
                                 ),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 size: 12,
                                 color: Color(0xFFC0C2C6),
@@ -722,18 +722,18 @@ class ArkProfilePage extends StatelessWidget {
                           height: 25,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                            children: const [
                               Expanded(
                                 child: Text(
                                   "Ubah Password",
-                                  style: AppStyleText.styleMontserrat(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 11.5,
                                     color: Colors.black,
                                   ),
                                 ),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 size: 12,
                                 color: Color(0xFFC0C2C6),
@@ -764,14 +764,14 @@ class ArkProfilePage extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 4),
                           child: Text(
                             "Keluar",
-                            style: AppStyleText.styleMontserrat(
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
-                              color: const Color(0xFFFB5C5C),
+                              color: Color(0xFFFB5C5C),
                             ),
                           ),
                         ),
