@@ -14,7 +14,7 @@ class ArkEditProfilePage extends StatelessWidget {
   final _epC = Get.find<ArkEditProfileController>();
   final _pC = Get.find<ArkProfileController>();
 
-  // HELLO
+  // JHSAJSJA
   @override
   Widget build(BuildContext context) {
     return Obx(
