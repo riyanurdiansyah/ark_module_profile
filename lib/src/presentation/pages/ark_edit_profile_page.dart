@@ -8,13 +8,13 @@ import 'package:intl/intl.dart';
 
 enum JenisKelamin { pria, wanita, defaultGender }
 
-// TEST AJA
-
 class ArkEditProfilePage extends StatelessWidget {
   ArkEditProfilePage({Key? key}) : super(key: key);
 
   final _epC = Get.find<ArkEditProfileController>();
   final _pC = Get.find<ArkProfileController>();
+
+  // HELLO
   @override
   Widget build(BuildContext context) {
     return Obx(
