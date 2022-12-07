@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ark_module_profile/ark_module_profile.dart';
 import 'package:ark_module_setup/ark_module_setup.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -315,7 +317,7 @@ class ArkProfilePage extends StatelessWidget {
           ),
           Obx(
             () {
-              if (_pC.isLogin.value) {
+              if (_pC.isLogin.value && Platform.isAndroid) {
                 return StreamBuilder<CoinEntity>(
                   stream: _pC.getCoin(),
                   builder: (_, snapshot) {
