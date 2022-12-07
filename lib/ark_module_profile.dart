@@ -12,7 +12,6 @@ export 'src/presentation/controllers/ark_profile_controller.dart';
 export 'src/presentation/controllers/ark_edit_profile_controller.dart';
 export 'src/presentation/controllers/ark_sertifikat_controller.dart';
 
-
 export 'src/presentation/pages/ark_edit_profile_page.dart';
 export 'src/presentation/pages/ark_profile_page.dart';
 export 'src/presentation/pages/face_recog/change_face_recognition_page.dart';
