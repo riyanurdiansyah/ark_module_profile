@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ark_module_profile/src/domain/entities/coin_entity.dart';
 import 'package:ark_module_profile/src/presentation/controllers/ark_profile_controller.dart';
 import 'package:ark_module_profile/utils/app_color.dart';
@@ -318,7 +320,7 @@ class ArkProfilePage extends StatelessWidget {
           ),
           Obx(
             () {
-              if (_pC.isLogin.value) {
+              if (_pC.isLogin.value && Platform.isAndroid) {
                 return StreamBuilder<CoinEntity>(
                   stream: _pC.getCoin(),
                   builder: (_, snapshot) {
