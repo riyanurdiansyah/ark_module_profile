@@ -11,6 +11,8 @@ abstract class ArkProfileRemoteDataSource {
 
   Future<bool> resetPassword(String email, String token);
 
+  Future<bool> deleteAccount(String email, String token);
+
   Future<ProvinsiDTO> getProvinsi();
 
   Future<CityDTO> getCity(int id);

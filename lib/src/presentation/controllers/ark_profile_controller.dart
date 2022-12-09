@@ -262,6 +262,26 @@ class ArkProfileController extends GetxController {
     );
   }
 
+  Future<void> deleteAccount() async {
+    AppDialog.dialogWithQuestion(
+        'Hapus Akun', 'Anda yakin ingin menghapus akun?', 'Batal', 'Hapus',
+        () async {
+      final response = await _useCase.deleteAccount(_email.value, _token.value);
+      response.fold(
+        ///IF RESPONSE IS ERROR
+        (fail) {
+          Get.back();
+          ExceptionHandle.execute(fail);
+        },
+
+        ///IF RESPONSE SUCCESS
+        (data) {
+          AppDialog.dialogDeleteAccount();
+        },
+      );
+    });
+  }
+
   Future<void> logout() async {
     try {
       GetPlatform.isAndroid

@@ -66,6 +66,18 @@ class ArkProfileRepositoryImpl implements ArkProfileRepository {
   }
 
   @override
+  Future<Either<Failure, bool>> deleteAccount(
+      String email, String token) async {
+    try {
+      //TODO
+      final reset = await dataSource.deleteAccount(email, token);
+      return Right(reset);
+    } catch (e) {
+      return ExceptionHandleResponse.execute(e);
+    }
+  }
+
+  @override
   Future<Either<Failure, ProvinsiEntity>> getProvinsi() async {
     try {
       final provinsi = await dataSource.getProvinsi();

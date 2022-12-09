@@ -23,6 +23,10 @@ class ArkProfileUseCase {
           String email, String token) async =>
       await repository.resetPassword(email, token);
 
+  Future<Either<Failure, bool>> deleteAccount(
+          String email, String token) async =>
+      await repository.deleteAccount(email, token);
+
   Future<Either<Failure, ProvinsiEntity>> getProvinsi() async =>
       await repository.getProvinsi();
 

@@ -107,6 +107,23 @@ class ArkProfileRemoteDataSourceImpl implements ArkProfileRemoteDataSource {
   }
 
   @override
+  Future<bool> deleteAccount(String email, String token) async {
+    await dioInterceptor(dio, token);
+    final response = await dio.post(deleteAccountUrl, data: {
+      "email": email,
+    });
+    int code = response.statusCode ?? 500;
+    if (code == 200) {
+      return response.data['success'];
+    }
+    return ExceptionHandleResponseAPI.execute(
+      code,
+      response,
+      'Error Delete Account... failed connect to server',
+    );
+  }
+
+  @override
   Future<ProvinsiDTO> getProvinsi() async {
     final response = await dio.get(provinsiUrl);
     int code = response.statusCode ?? 500;

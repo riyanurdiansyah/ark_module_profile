@@ -756,33 +756,54 @@ class ArkProfilePage extends StatelessWidget {
                   color: Colors.white,
                   child: GestureDetector(
                     onTap: () => _pC.confirmLogout(),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Column(
                       children: [
-                        Image.asset(
-                          'assets/images/keluar.png',
-                          width: 18,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset(
+                              'assets/images/keluar.png',
+                              width: 18,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                "Keluar",
+                                style: AppStyleText.styleMontserrat(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                  color: const Color(0xFFFB5C5C),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            "Keluar",
-                            style: AppStyleText.styleMontserrat(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12,
-                              color: const Color(0xFFFB5C5C),
+                        const SizedBox(height: 70),
+                        if (Platform.isIOS)
+                          GestureDetector(
+                            onTap: () {
+                              _pC.deleteAccount();
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Hapus akun',
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    color: Color.fromRGBO(238, 43, 43, 1),
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
-                        ),
                         Container(
                           height: Get.height <= 680
-                              ? Get.height / 12
+                              ? Get.height / 16
                               : Get.height <= 800
-                                  ? Get.height / 8
-                                  : Get.height / 4,
+                                  ? Get.height / 12
+                                  : Get.height / 8,
                           color: Colors.white,
                         ),
                       ],

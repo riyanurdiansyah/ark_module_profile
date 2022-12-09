@@ -12,6 +12,8 @@ abstract class ArkProfileRepository {
 
   Future<Either<Failure, bool>> resetPassword(String email, String token);
 
+  Future<Either<Failure, bool>> deleteAccount(String email, String token);
+
   Future<Either<Failure, ProvinsiEntity>> getProvinsi();
 
   Future<Either<Failure, CityEntity>> getCity(int id);
